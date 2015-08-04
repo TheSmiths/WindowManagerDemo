@@ -1,0 +1,25 @@
+<Alloy>
+	<!-- Left View -->
+	<Window id="leftView">
+		<Label>Left View</Label>
+	</Window>
+	
+	<!-- Center View -->
+	<TableView id="options" onClick="selectedOption">
+		<TableViewSection>
+			<TableViewRow title="Open Modal Window"/>
+			<TableViewRow title="Open Children Window"/>
+		</TableViewSection>
+		<TableViewSection id="sectionVeg" headerTitle="Left View">
+			<TableViewRow title="Open"/>
+		</TableViewSection>
+		<TableViewSection id="sectionFish" headerTitle="Right View">
+			<TableViewRow title="Open"/>
+		</TableViewSection>
+	</TableView>
+
+	<!-- Right View -->
+	<Window id="rightView">
+		<Label>Right View</Label>
+	</Window>
+</Alloy>
