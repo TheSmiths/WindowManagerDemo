@@ -17,6 +17,8 @@ function setupDrawerManager() {
 		$.WindowManager = require('DrawerManager.2.1.2');
 		$.WindowManager.type = "DrawerManager";
 
+		$.WindowManager.configure({ debug: true });
+
 		$.WindowManager.init({
 			leftView : (function () {
 				return $.leftView;
@@ -40,11 +42,16 @@ function setupTabsManager() {
 	if (!$.WindowManager || $.WindowManager.type !== "TabsManager") {
 		$.WindowManager = require('TabsManager.0.9.1');
 		$.WindowManager.type = "TabsManager";
+		$.WindowManager.configure({ debug: true });
 		$.WindowManager.init();
 	}
 
-	var flow = $.WindowManager.createFlow($.tabGroup, {
-		defaultActiveTabIndex : $.tabGroup.tabs[0]
+	var flow = $.WindowManager.createFlow({
+		// all style of root should be defined in styles files
+		root : $.tabGroup, 
+		beforeCreating : function (root) {
+			root.setActiveTab(root.tabs[0]);
+		}
 	});
 
 	$.flow = flow;

@@ -19,41 +19,29 @@ var _Factory = (function () {
             return {
                 tabGroup: flow.root,
                 open: function openFlow() { _openFlow(flow); },  
-                close: function closeFlow() { setTimeout(function() { _closeFlow(flow); }, 1); }
+                close: function closeFlow() { setTimeout(function() { _closeFlow(flow); }, 0); }
             };
         },
-        newWindowStub: function (window, flow, asModal, view) {
+        newWindowStub: function (args) {
             return {
-                window: window,
-                open: function openWindow() { _openWindow(window, flow, asModal, view); },
-                close: function closeWindow() { _closeWindow(window, flow, asModal, view); }
+                window: args.window,
+                open: function openWindow() { _openWindow(args); },
+                close: function closeWindow() { _closeWindow(args); }
             };
         }
     };
 }());
 
 
-function _createFlow(tabs, options) {
-    var flow = { 
-            id: _Factory.newId(), 
-            children: OS_ANDROID ? [] : undefined,
-            viewStack: OS_ANDROID ? [] : undefined,
-            root: null
-        }; 
+function _createFlow(args) {
 
-    /* Handle options correcly */
-    options = options || {};
-    if (options.defaultActiveTabIndex) {
-        tabs.setActiveTab(options.defaultActiveTabIndex);
-        delete options.defaultActiveTabIndex;
-    }
-    /* We need to create a tab group, will be our root. */
-    flow.root = tabs;
+    args.beforeCreating && args.beforeCreating(args.root);
 
-    
-
-    /* Then, return the stub */
-    return _Factory.newFlowStub(flow);
+    return _Factory.newFlowStub({
+        id: _Factory.newId(),
+        root: args.root,
+        children: OS_ANDROID ? [] : undefined
+    });
 }
 
 
@@ -72,7 +60,12 @@ function _createWindow(view, options) {
     }
 
     /* Return the stub */
-    return _Factory.newWindowStub(window, _currentFlow, options.modal, undefined);
+    return _Factory.newWindowStub({
+        window: window,
+        flow : _currentFlow,
+        asModal : options.modal,
+        view : undefined
+    });
 }
 
 
@@ -97,15 +90,20 @@ function _openFlow(flow) {
  *
  * Open the given window within the given flow. Will fail if the given flow is not the active one.
  *
- * @param {titanium: UI.Window} window The window to be opened
- * @param {Boolean} asModal Open the window as a modal window if true
- * @param {titanium: UI.View} view Only for android with drawer. This is the content view to add.
+ * @param {Object} args
+ * @param {titanium: UI.Window} [args.window] window The window to be opened
+ * @param {Object} [args.flow] A representation of a flow
+ * @param {Boolean} [args.asModal] Open the window as a modal window if true
  */
-function _openWindow(window, flow, asModal, view) {
-    if (asModal) { return window.open({ modal: true }); }
-    if (!_currentFlow || _currentFlow.id !== flow.id) { throw("Unable to open the window in the current flow."); }
+function _openWindow(args) {
+    if (args.asModal) {
+        return args.window.open({ modal: true });
+    }
+    if (!_currentFlow || _currentFlow.id !== args.flow.id) {
+        throw("Unable to open the window in the current flow.");
+    }
 
-    flow.root.getActiveTab().open(window, { animated : true});
+    args.flow.root.getActiveTab().open(args.window, { animated : true});
 }
 
 /**
@@ -117,9 +115,8 @@ function _openWindow(window, flow, asModal, view) {
  * @param {Object} flow A reference to a representation of a flow
  */
 function _closeFlow(flow) {
-    /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
-     * not windows but views and do not need to be closed */
-    OS_ANDROID && flow.children.map(function (w) { w.close(); });
+    /* On Android, all window should be closed separately */
+    OS_ANDROID && flow.children.each(function (window) { window.close(); });
     flow.root.close();
 
     /* Remove the flow if it is still active */
@@ -134,29 +131,23 @@ function _closeFlow(flow) {
  *
  * Close the given window of the given flow
  *
- * @param {titanium: UI.window} window The window to be closed
- * @param {Object} flow A representation of a flow
- * @param {Boolean} asModal Close the modal window without impacting the flow
+ * @param {Object} args
+ * @param {titanium: UI.Window} [args.window] window The window to be closed
+ * @param {Boolean} [args.asModal] Close the modal window without impacting the flow
+ * @param {Object} [args.flow] A representation of a flow
  */
-function _closeWindow(window, flow, asModal, view) {
-    var index = OS_ANDROID && flow.children.indexOf(window) || 0;
+function _closeWindow(args) {
+    var index = OS_ANDROID && args.flow.children.indexOf(args.window) || 0;
 
-    if (asModal) { return window.close(); }
+    if (args.asModal) { return args.window.close(); }
     if (index === -1) { throw("Window already closed"); }
 
-    OS_ANDROID && flow.children.splice(index, 1);
-    window.close();
+    OS_ANDROID && args.flow.children.splice(index, 1);
+    args.window.close();
 }
 
 /* --------------- TABS METHODS --------------- */ 
-/**
- * @method _createDrawer
- * @private
- * 
- * Create a new instance of the drawer (NappDrawer for iOS, tripvi Drawer for Android).
- *
- * @return {Object} An instance of the drawer.
- */
+
 
 /* -------------- INIT FUNCTIONS ---------- */
 
@@ -166,7 +157,7 @@ function _configure(args) {
     /* If there is a debug option, we'll decorate each method to offer some logs */
     if (args.debug) {
         function log(msg) {
-            Ti.API.debug("\033[1;32m[DrawerManager]: \033[0m" + msg);
+            Ti.API.debug("\033[1;32m[TabsManager]: \033[0m" + msg);
         }
 
         /* Windows */
@@ -181,24 +172,24 @@ function _configure(args) {
         };
 
         var origOpenWindow = _openWindow;
-        _openWindow = function (window, flow, asModal, view) {
-            if (asModal) {
+        _openWindow = function (args) {
+            if (args.asModal) {
                 log("Open modal window");
             } else {
-                log("Open window in flow #" + flow.id + (view ? " with drawer" : ""));
+                log("Open window in flow #" + args.flow.id);
             }
 
-            return origOpenWindow(window, flow, asModal, view);
+            return origOpenWindow(args);
         };
 
         var origCloseWindow = _closeWindow;
-        _closeWindow = function (window, flow, asModal, view) {
-            if (asModal) {
+        _closeWindow = function (args) {
+            if (args.asModal) {
                 log("Close modal window");
             } else {
-                log("Close window in flow #" + flow.id);
+                log("Close window in flow #" + args.flow.id);
             }
-           return origCloseWindow(window, flow, asModal, view); 
+           return origCloseWindow(args); 
         };
 
         /* Flows */
@@ -218,13 +209,6 @@ function _configure(args) {
         _closeFlow = function (flow) {
             log("Close flow #"+flow.id);
             return origCloseFlow(flow);
-        };
-
-        /* Drawer */
-        var origCreateDrawer = _createDrawer;
-        _createDrawer = function () {
-            log("Create a new drawer");
-            return origCreateDrawer();
         };
     }
 
@@ -254,8 +238,7 @@ function _init(config) {
  * too. For iOS, it's similar to using a NavigationWindow; On Android, it will mimic that behavior.
  *
  * @param {titanium: UI.View} View The view to place in that window.
- * @param {Object} options Options to give to the root window during its creation. May also contain
- * a special key "drawer" to specify if a drawer should be bound with the window or not.
+ * @param {Object} options Options to give to the root window during its creation.
  * @return {Stub} A window stub to open and close the created window / flow. 
  */
 exports.createFlow = _createFlow;
@@ -267,8 +250,7 @@ exports.createFlow = _createFlow;
  * It's not recommended to open a window within a flow which has been closed; 
  *
  * @param {titanium: UI.View} View The view to place in that window.
- * @param {Object} options Options to give to the window during its creation. May also contain
- * a special key "drawer" to specify if a drawer should be bound with the window or not.
+ * @param {Object} options Options to give to the window during its creation.
  * @return {Stub} A window stub to open and close the created window.
  */
 exports.createWindow = _createWindow;
@@ -281,22 +263,16 @@ exports.createWindow = _createWindow;
  * @param {Object} args
  * @param {Boolean} args.debug If true, will decorate all functions with some logs
  *
- * @return {DrawerManager} The module itself for chaining
+ * @return {TabsManager} The module itself for chaining
  */
 exports.configure = _configure;
 
 /**
  * @method init
  *
- * Initialize the drawer manager
+ * Initialize the tabs manager
  *
  * @param {Object} config 
- * @param {Function} [config.leftView] The view that should be placed in the left panel of the drawer.  
- * @param {Number} [config.leftDrawerWidth=200] The width of the left panel
- * @param {Function} [config.rightView] The view that should be placed in the right panel of the drawer.  
- * @param {Number} [config.rightDrawerWidth=200] The width of the right panel @param
- * @param {Boolean} [config.defaultWithDrawer=true] If true, every window will be created with a
- * drawer by default.
  * @param {Object} [config.defaultStyle] Default style to apply to the window.
  */
 exports.init = _init;
