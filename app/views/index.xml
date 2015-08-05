@@ -4,7 +4,7 @@
 		<Window title="Window Manager Demo">
 			<TableView id="demos" onClick="selectedDemo">
 					<TableViewRow title="Drawer Manager 2.1.2"/>
-					<TableViewRow title="Tabs Manager 0.9.0"/>
+					<TableViewRow title="Tabs Manager 0.9.1"/>
 			</TableView>
 		</Window>
 	</NavigationWindow>
@@ -40,25 +40,26 @@
 	</Window>
 
 	
-	<!-- For TabsManager.0.9.0 -->
+	<!-- For TabsManager.0.9.1 -->
 	
 	<!-- Tabs -->
-	<Tab title="Children">
-		<Window id="win1">
-			<Label onClick="openChildWindow">Open a children window</Label>
-		</Window>
-	</Tab>
+	<TabGroup id="tabGroup">
+		<Tab id="tab1" title="Children">
+			<Window id="win1" title="Tabs Manager 0.9.1">
+				<Label onClick="openChildWindow">Open a children window</Label>
+			</Window>
+		</Tab>
 
-	<Tab title="Modal">
-		<Window id="win2">
-			<Label onClick="openModalWindow">Open a modal window</Label>
-		</Window>
-	</Tab>
+		<Tab id="tab2" title="Modal">
+			<Window id="win2">
+				<Label onClick="openModalWindow">Open a modal window</Label>
+			</Window>
+		</Tab>
 
-	<Tab title="Exit">
-		<Window id="win3">
-			<Label onClick="exitCurrentFlow">Exit Tabs Manager</Label>
-		</Window>
-	</Tab>
-
+		<Tab id="tab3" title="Exit">
+			<Window id="win3">
+				<Label onClick="exitCurrentFlow">Exit Tabs Manager</Label>
+			</Window>
+		</Tab>
+	</TabGroup>
 </Alloy>

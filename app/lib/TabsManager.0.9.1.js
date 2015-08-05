@@ -43,11 +43,14 @@ function _createFlow(tabs, options) {
 
     /* Handle options correcly */
     options = options || {};
-
+    if (options.defaultActiveTabIndex) {
+        tabs.setActiveTab(options.defaultActiveTabIndex);
+        delete options.defaultActiveTabIndex;
+    }
     /* We need to create a tab group, will be our root. */
-    flow.root = (function createTabGroup(tabs, options) {
-        return Ti.UI.createTabGroup({ tabs: tabs });
-    }(tabs, options));
+    flow.root = tabs;
+
+    
 
     /* Then, return the stub */
     return _Factory.newFlowStub(flow);
@@ -67,8 +70,6 @@ function _createWindow(view, options) {
             window: window,
         });
     }
-
-    /* Handle the options */
 
     /* Return the stub */
     return _Factory.newWindowStub(window, _currentFlow, options.modal, undefined);

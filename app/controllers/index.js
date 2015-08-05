@@ -7,7 +7,7 @@ function selectedDemo(e) {
 	if (e.row.title === "Drawer Manager 2.1.2") {
 		setupDrawerManager();
 	}
-	else if (e.row.title === "Tabs Manager 0.9.0") {
+	else if (e.row.title === "Tabs Manager 0.9.1") {
 		setupTabsManager();
 	}
 }
@@ -38,18 +38,14 @@ function setupDrawerManager() {
 
 function setupTabsManager() {
 	if (!$.WindowManager || $.WindowManager.type !== "TabsManager") {
-		$.WindowManager = require('TabsManager.0.9.0');
+		$.WindowManager = require('TabsManager.0.9.1');
 		$.WindowManager.type = "TabsManager";
 		$.WindowManager.init();
 	}
 
-	var tabs = _.keys($).map(function (key) {
-		if ($[key].apiName === "Ti.UI.Tab") {
-			return $[key];
-		}
-	}).filter(function (n) { return n != undefined });
-
-	var flow = $.WindowManager.createFlow(tabs, null);
+	var flow = $.WindowManager.createFlow($.tabGroup, {
+		defaultActiveTabIndex : $.tabGroup.tabs[0]
+	});
 
 	$.flow = flow;
 	flow.open();
@@ -101,9 +97,9 @@ function openModalWindow(e) {
 }
 
 function exitCurrentFlow() {
-	if ($.flow.tabGroup) {
-		alert('TabsManager can only open and close flow one time. You will get error if try to open second time.');
-	}
+	// if ($.flow.tabGroup) {
+	// 	alert('TabsManager can only open and close flow one time. You will get error if try to open second time.');
+	// }
 	$.flow.close();
 	delete $.flow;
 }
