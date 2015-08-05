@@ -1,65 +1,65 @@
 <Alloy>
-	<!-- Index -->
-	<NavigationWindow>
-		<Window title="Window Manager Demo">
-			<TableView id="demos" onClick="selectedDemo">
-					<TableViewRow title="Drawer Manager 2.1.2"/>
-					<TableViewRow title="Tabs Manager 0.9.1"/>
-			</TableView>
-		</Window>
-	</NavigationWindow>
+    <!-- Index -->
+    <NavigationWindow>
+        <Window title="Window Manager Demo">
+            <TableView id="demos" onClick="selectedDemo">
+                    <TableViewRow title="Drawer Manager 2.1.2"/>
+                    <TableViewRow title="Tabs Manager 0.9.1"/>
+            </TableView>
+        </Window>
+    </NavigationWindow>
 
 
-	<!-- For DrawerManager.2.1.2 -->
+    <!-- For DrawerManager.2.1.2 -->
 
-	<!-- Left View -->
-	<Window id="leftView">
-		<Label>Left View</Label>
-	</Window>
-	
-	<!-- Center View -->
-	<TableView id="options" onClick="selectedOption">
-		<TableViewSection>
-			<TableViewRow title="Open Modal Window"/>
-			<TableViewRow title="Open Children Window"/>
-		</TableViewSection>
-		<TableViewSection headerTitle="Left View">
-			<TableViewRow title="Open"/>
-		</TableViewSection>
-		<TableViewSection headerTitle="Right View">
-			<TableViewRow title="Open"/>
-		</TableViewSection>
-		<TableViewSection headerTitle="Drawer Manager 2.1.2">
-			<TableViewRow title="Exit"/>
-		</TableViewSection>
-	</TableView>
+    <!-- Left View -->
+    <Window id="leftView">
+        <Label>Left View</Label>
+    </Window>
 
-	<!-- Right View -->
-	<Window id="rightView">
-		<Label>Right View</Label>
-	</Window>
+    <!-- Center View -->
+    <TableView id="options" onClick="selectedOption">
+        <TableViewSection>
+            <TableViewRow title="Open Modal Window"/>
+            <TableViewRow title="Open Children Window"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Left View">
+            <TableViewRow title="Open"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Right View">
+            <TableViewRow title="Open"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Drawer Manager 2.1.2">
+            <TableViewRow title="Exit"/>
+        </TableViewSection>
+    </TableView>
 
-	
-	<!-- For TabsManager.0.9.1 -->
-	
-	<!-- Tabs -->
-	<TabGroup id="tabGroup">
-		<Tab id="tab1" title="Children">
-			<Window id="win1" title="Tabs Manager 0.9.1">
-				<Label onClick="openChildWindow">Open a children window</Label>
-			</Window>
-		</Tab>
+    <!-- Right View -->
+    <Window id="rightView">
+        <Label>Right View</Label>
+    </Window>
 
-		<Tab id="tab2" title="Modal">
-			<Window id="win2">
-				<Label onClick="openModalWindow">Open a modal window</Label>
-			</Window>
-		</Tab>
 
-		<Tab id="tab3" title="Exit">
-			<Window id="win3">
-				<Label onClick="exitCurrentFlow">Exit Tabs Manager</Label>
-			</Window>
-		</Tab>
-	</TabGroup>
+    <!-- For TabsManager.0.9.1 -->
+
+    <!-- Tabs -->
+    <TabGroup id="tabGroup">
+        <Tab id="tab1" title="Children">
+            <Window id="win1" title="Tabs Manager 0.9.1">
+                <Label onClick="openChildWindow">Open a children window</Label>
+            </Window>
+        </Tab>
+
+        <Tab id="tab2" title="Modal">
+            <Window id="win2">
+                <Label onClick="openModalWindow">Open a modal window</Label>
+            </Window>
+        </Tab>
+
+        <Tab id="tab3" title="Exit">
+            <Window id="win3">
+                <Label onClick="exitCurrentFlow">Exit Tabs Manager</Label>
+            </Window>
+        </Tab>
+    </TabGroup>
 </Alloy>
