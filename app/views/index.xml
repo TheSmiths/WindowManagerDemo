@@ -1,4 +1,17 @@
 <Alloy>
+	<!-- Index -->
+	<NavigationWindow>
+		<Window title="Window Manager Demo">
+			<TableView id="demos" onClick="selectedDemo">
+					<TableViewRow title="Drawer Manager 2.1.2"/>
+					<TableViewRow title="Tabs Manager 0.9.0"/>
+			</TableView>
+		</Window>
+	</NavigationWindow>
+
+
+	<!-- For DrawerManager.2.1.2 -->
+
 	<!-- Left View -->
 	<Window id="leftView">
 		<Label>Left View</Label>
@@ -10,11 +23,14 @@
 			<TableViewRow title="Open Modal Window"/>
 			<TableViewRow title="Open Children Window"/>
 		</TableViewSection>
-		<TableViewSection id="sectionVeg" headerTitle="Left View">
+		<TableViewSection headerTitle="Left View">
 			<TableViewRow title="Open"/>
 		</TableViewSection>
-		<TableViewSection id="sectionFish" headerTitle="Right View">
+		<TableViewSection headerTitle="Right View">
 			<TableViewRow title="Open"/>
+		</TableViewSection>
+		<TableViewSection headerTitle="Drawer Manager 2.1.2">
+			<TableViewRow title="Exit"/>
 		</TableViewSection>
 	</TableView>
 
@@ -23,15 +39,25 @@
 		<Label>Right View</Label>
 	</Window>
 
-	<Tab id="tab1" title="Tab 1">
+	
+	<!-- For TabsManager.0.9.0 -->
+	
+	<!-- Tabs -->
+	<Tab title="Children">
 		<Window id="win1">
 			<Label onClick="openChildWindow">Open a children window</Label>
 		</Window>
 	</Tab>
 
-	<Tab id="tab2" title="Tab 2">
+	<Tab title="Modal">
 		<Window id="win2">
 			<Label onClick="openModalWindow">Open a modal window</Label>
+		</Window>
+	</Tab>
+
+	<Tab title="Exit">
+		<Window id="win3">
+			<Label onClick="exitCurrentFlow">Exit Tabs Manager</Label>
 		</Window>
 	</Tab>
 

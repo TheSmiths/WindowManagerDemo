@@ -205,9 +205,8 @@ function _closeFlow(flow) {
     /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
      * not windows but views and do not need to be closed */
     OS_ANDROID && !flow.withDrawer && flow.children.map(function (w) { w.close(); });
-    OS_IOS && flow.withDrawer && !_currentFlow.withDrawer && _drawer.close();
+    OS_IOS && flow.withDrawer && _currentFlow.withDrawer && _drawer.close();
     flow.root.close();
-
     /* Remove the flow if it is still active */
     if (_currentFlow.id === flow.id) {
         _currentFlow = null;
