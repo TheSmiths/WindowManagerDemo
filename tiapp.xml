@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
-	<id>com.thesmiths.drawermanager.demo</id>
-	<name>DrawerManagerDemo</name>
+	<id>com.thesmiths.windowmanager.demo</id>
+	<name>WindowManagerDemo</name>
 	<version>1.0</version>
 	<publisher>not specified</publisher>
 	<url>thesmiths.com</url>
