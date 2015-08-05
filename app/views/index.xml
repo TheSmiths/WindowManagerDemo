@@ -22,4 +22,17 @@
 	<Window id="rightView">
 		<Label>Right View</Label>
 	</Window>
+
+	<Tab id="tab1" title="Tab 1">
+		<Window id="win1">
+			<Label onClick="openChildWindow">Open a children window</Label>
+		</Window>
+	</Tab>
+
+	<Tab id="tab2" title="Tab 2">
+		<Window id="win2">
+			<Label onClick="openModalWindow">Open a modal window</Label>
+		</Window>
+	</Tab>
+
 </Alloy>
