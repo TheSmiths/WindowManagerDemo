@@ -1,6 +1,6 @@
 /* -------------- INIT FUNCTION ---------- */
 (function constructor(args) {
-    $.WindowManager = args.windowManager;
+    $.windowManager = args.windowManager;
     _init();
 })(arguments[0] || {});
 /* --------------- HANDLE USER INTERACTIONS --------------- */
@@ -8,9 +8,9 @@
 /* --------------- EMBEDDED METHODS --------------- */
 
 function _init () {
-    $.WindowManager.configure({ debug: true });
+    $.windowManager.configure({ debug: true });
 
-    $.WindowManager.init({
+    $.windowManager.init({
         leftView : (function () {
             return $.leftView;
         })(),
@@ -21,10 +21,10 @@ function _init () {
 }
 
 function _open() {
-    var flow = $.WindowManager.createFlow(Alloy.createController('requires/view', {
+    var flow = $.windowManager.createFlow(Alloy.createController('requires/view', {
         isRoot : true,
         isDrawer : true,
-        windowManager : $.WindowManager,
+        windowManager : $.windowManager,
         closeFlow : _close
     }).getView(), {
         drawer : true,
@@ -39,7 +39,7 @@ function _close() {
     $.flow.close();
 
     // Clean up
-    delete $.WindowManager;
+    delete $.windowManager;
     delete $.flow;
 }
 

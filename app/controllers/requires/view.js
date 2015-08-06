@@ -1,6 +1,6 @@
 /* -------------- INIT FUNCTION ---------- */
 (function constructor(args) {
-    $.WindowManager = args.windowManager;
+    $.windowManager = args.windowManager;
     $.closeFlow = args.closeFlow;
     $.isDrawer = args.isDrawer;
     cleanUpUnusedRow(args);
@@ -32,10 +32,10 @@ function selectedOption(e) {
         createAndOpenWindow({modal : false});
     }
     else if (e.row.action === "openLeftView") {
-        $.WindowManager.openLeftWindow();
+        $.windowManager.openLeftWindow();
     }
     else if (e.row.action === "openRightView") {
-        $.WindowManager.openRightWindow();
+        $.windowManager.openRightWindow();
     }
     else if (e.row.action === "close") {
         $.window.close();
@@ -60,10 +60,10 @@ function createAndOpenWindow(args) {
 
     var viewCtrl = Alloy.createController('requires/view', {
         isModal : args.modal,
-        windowManager : $.WindowManager,
+        windowManager : $.windowManager,
         closeFlow : $.closeFlow
     });
-    var window = $.WindowManager.createWindow(viewCtrl.getView(), {
+    var window = $.windowManager.createWindow(viewCtrl.getView(), {
         modal : args.modal,
         drawer : $.isDrawer
     });

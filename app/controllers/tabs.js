@@ -1,6 +1,6 @@
 /* -------------- INIT FUNCTIONS ---------- */
 (function constructor(args) {
-    $.WindowManager = args.windowManager;
+    $.windowManager = args.windowManager;
     initTabs();
     _init();
 })(arguments[0] || {});
@@ -15,7 +15,7 @@ function initTabs() {
 
         window.add(Alloy.createController('requires/view', {
             isRoot : true,
-            windowManager : $.WindowManager,
+            windowManager : $.windowManager,
             closeFlow : _close
         }).getView());
 
@@ -33,13 +33,13 @@ function initTabs() {
 /* --------------- EMBEDDED METHODS --------------- */
 
 function _init () {
-    $.WindowManager.configure({ debug: true });
+    $.windowManager.configure({ debug: true });
 
-    $.WindowManager.init();
+    $.windowManager.init();
 }
 
 function _open() {
-    var flow = $.WindowManager.createFlow({
+    var flow = $.windowManager.createFlow({
         // all style of root should be defined in styles files
         root : $.tabGroup,
         beforeCreating : function (root) {
@@ -55,7 +55,7 @@ function _close() {
     $.flow.close();
 
     // Clean up
-    delete $.WindowManager;
+    delete $.windowManager;
     delete $.flow;
 }
 
