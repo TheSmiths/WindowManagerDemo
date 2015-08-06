@@ -4,7 +4,7 @@
         <Window title="Window Manager Demo">
             <TableView id="demos" onClick="selectedDemo">
                     <TableViewRow title="Drawer Manager 2.1.2"/>
-                    <TableViewRow title="Tabs Manager 0.9.1"/>
+                    <TableViewRow title="Tabs Manager 0.9.2"/>
             </TableView>
         </Window>
     </NavigationWindow>
@@ -12,7 +12,7 @@
     <Window title="Window Manager Demo" platform="android">
         <TableView id="demos" onClick="selectedDemo">
             <TableViewRow title="Drawer Manager 2.1.2"/>
-            <TableViewRow title="Tabs Manager 0.9.1"/>
+            <TableViewRow title="Tabs Manager 0.9.2"/>
         </TableView>
     </Window>
 
@@ -47,12 +47,12 @@
     </Window>
 
 
-    <!-- For TabsManager.0.9.1 -->
+    <!-- For TabsManager.0.9.2 -->
 
     <!-- Tabs -->
     <TabGroup id="tabGroup">
         <Tab id="tab1" title="Children">
-            <Window id="win1" title="Tabs Manager 0.9.1">
+            <Window id="win1" title="Tabs Manager 0.9.2">
                 <Label onClick="openChildWindow">Open a children window</Label>
             </Window>
         </Tab>

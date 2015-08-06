@@ -7,7 +7,7 @@ function selectedDemo(e) {
     if (e.row.title === "Drawer Manager 2.1.2") {
         setupDrawerManager();
     }
-    else if (e.row.title === "Tabs Manager 0.9.1") {
+    else if (e.row.title === "Tabs Manager 0.9.2") {
         setupTabsManager();
     }
 }
@@ -40,7 +40,7 @@ function setupDrawerManager() {
 
 function setupTabsManager() {
     if (!$.WindowManager || $.WindowManager.type !== "TabsManager") {
-        $.WindowManager = require('TabsManager.0.9.1');
+        $.WindowManager = require('TabsManager.0.9.2');
         $.WindowManager.type = "TabsManager";
         $.WindowManager.configure({ debug: true });
         $.WindowManager.init();
