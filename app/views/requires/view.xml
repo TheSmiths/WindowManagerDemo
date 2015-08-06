@@ -1,0 +1,17 @@
+<Alloy>
+    <TableView id="options" onClick="selectedOption">
+        <TableViewSection>
+            <TableViewRow action="openModalWin" title="Open a modal Window"/>
+            <TableViewRow id="openChildWinRow" action="openChildWin" title="Open a children Window"/>
+            <TableViewRow id="closeWinRow" action="close" title="Close"/>
+        </TableViewSection>
+        <!-- Only for Drawer -->
+        <TableViewSection id="forDrawerSection" headerTitle="Drawer Views">
+            <TableViewRow action="openLeftView" title="Open Left View"/>
+            <TableViewRow action="openRightView" title="Open Right View"/>
+        </TableViewSection>
+        <TableViewSection id="flowSection" headerTitle="Flow">
+            <TableViewRow action="exitFlow" title="Exit"/>
+        </TableViewSection>
+    </TableView>
+</Alloy>

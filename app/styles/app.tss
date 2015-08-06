@@ -4,6 +4,9 @@
 'View' : {
     backgroundColor : '#ecf0f1'
 }
+'TableView' : {
+    backgroundColor : '#ecf0f1'
+}
 'Label' : {
     color : '#34495e'
 }

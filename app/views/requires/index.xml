@@ -1,0 +1,8 @@
+<Alloy>
+	<Window id="container" title="Window Manager Demo">
+        <TableView id="demos" onClick="selectedDemo">
+                <TableViewRow type="drawer" title="Drawer Manager 2.1.2"/>
+                <TableViewRow type="tabs" title="Tabs Manager 0.9.2"/>
+        </TableView>
+    </Window>
+</Alloy>

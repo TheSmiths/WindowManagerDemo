@@ -1,0 +1,36 @@
+<Alloy>
+    <!-- Left View -->
+    <Window platform="ios" id="leftView">
+        <Label>Left View</Label>
+    </Window>
+
+    <View platform="android" id="leftView">
+        <Label>Left View</Label>
+    </View>
+
+    <!-- Center View -->
+    <!-- <TableView id="options" onClick="selectedOption">
+        <TableViewSection>
+            <TableViewRow _id="openModalWin" title="Open Modal Window"/>
+            <TableViewRow _id="openChildWin" title="Open Children Window"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Left View">
+            <TableViewRow _id="openLeftView" title="Open"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Right View">
+            <TableViewRow _id="openRightView" title="Open"/>
+        </TableViewSection>
+        <TableViewSection headerTitle="Drawer Manager 2.1.2">
+            <TableViewRow _id="exitDrawerManager" title="Exit"/>
+        </TableViewSection>
+    </TableView> -->
+
+    <!-- Right View -->
+    <Window id="rightView">
+        <Label>Right View</Label>
+    </Window>
+
+    <View platform="android" id="rightView">
+        <Label>Right View</Label>
+    </View>
+</Alloy>
