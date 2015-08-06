@@ -3,16 +3,16 @@
     <NavigationWindow platform="ios">
         <Window title="Window Manager Demo">
             <TableView id="demos" onClick="selectedDemo">
-                    <TableViewRow title="Drawer Manager 2.1.2"/>
-                    <TableViewRow title="Tabs Manager 0.9.2"/>
+                    <TableViewRow _id="loadDrawerManager" title="Drawer Manager 2.1.2"/>
+                    <TableViewRow _id="loadTabsManager" title="Tabs Manager 0.9.2"/>
             </TableView>
         </Window>
     </NavigationWindow>
 
     <Window title="Window Manager Demo" platform="android">
         <TableView id="demos" onClick="selectedDemo">
-            <TableViewRow title="Drawer Manager 2.1.2"/>
-            <TableViewRow title="Tabs Manager 0.9.2"/>
+            <TableViewRow _id="loadDrawerManager" title="Drawer Manager 2.1.2"/>
+            <TableViewRow _id="loadTabsManager" title="Tabs Manager 0.9.2"/>
         </TableView>
     </Window>
 
@@ -27,17 +27,17 @@
     <!-- Center View -->
     <TableView id="options" onClick="selectedOption">
         <TableViewSection>
-            <TableViewRow title="Open Modal Window"/>
-            <TableViewRow title="Open Children Window"/>
+            <TableViewRow _id="openModalWin" title="Open Modal Window"/>
+            <TableViewRow _id="openChildWin" title="Open Children Window"/>
         </TableViewSection>
         <TableViewSection headerTitle="Left View">
-            <TableViewRow title="Open"/>
+            <TableViewRow _id="openLeftView" title="Open"/>
         </TableViewSection>
         <TableViewSection headerTitle="Right View">
-            <TableViewRow title="Open"/>
+            <TableViewRow _id="openRightView" title="Open"/>
         </TableViewSection>
         <TableViewSection headerTitle="Drawer Manager 2.1.2">
-            <TableViewRow title="Exit"/>
+            <TableViewRow _id="exitDrawerManager" title="Exit"/>
         </TableViewSection>
     </TableView>
 

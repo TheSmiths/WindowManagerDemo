@@ -3,11 +3,11 @@
 })(arguments[0] || {});
 
 function selectedDemo(e) {
-    $.flow && $.flow.close()
-    if (e.row.title === "Drawer Manager 2.1.2") {
+    if (!e.row._id) return false;
+    if (e.row._id === "loadDrawerManager") {
         setupDrawerManager();
     }
-    else if (e.row.title === "Tabs Manager 0.9.2") {
+    else if (e.row._id === "loadTabsManager") {
         setupTabsManager();
     }
 }
@@ -59,19 +59,20 @@ function setupTabsManager() {
 }
 
 function selectedOption(e) {
-    if (e.row.title === "Open Modal Window") {
+    if (!e.row._id) return false;
+    if (e.row._id === "openModalWin") {
         openModalWindow();
     }
-    else if (e.row.title === "Open Children Window") {
+    else if (e.row._id === "openChildWin") {
         openChildWindow();
     }
-    else if (e.section.headerTitle === "Left View") {
+    else if (e.row._id === "openLeftView") {
         $.WindowManager.openLeftWindow();
     }
-    else if (e.section.headerTitle === "Right View") {
+    else if (e.row._id === "openRightView") {
         $.WindowManager.openRightWindow();
     }
-    else if (e.section.headerTitle === "Drawer Manager 2.1.2" && e.row.title === "Exit") {
+    else if (e.row._id === "exitDrawerManager") {
         exitCurrentFlow();
     }
     else {
