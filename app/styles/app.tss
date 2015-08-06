@@ -1,9 +1,15 @@
 'Window' : {
-    backgroundColor : 'white'
+    backgroundColor : '#ecf0f1'
+}
+'View' : {
+    backgroundColor : '#ecf0f1'
 }
 'Label' : {
-    color : 'black'
+    color : '#34495e'
 }
 'TableViewRow' : {
-    color : 'black'
+    color : '#34495e'
+}
+'TableViewRow[platform=android]' : {
+    height : 44
 }
