@@ -1,35 +1,22 @@
 /* -------------- INIT FUNCTION ---------- */
+
 (function constructor(args) {
     $.windowManager = args.windowManager;
     $.closeFlow = args.closeFlow;
     $.isDrawer = args.isDrawer;
+
     cleanUpUnusedRow(args);
 })(arguments[0] || {});
-
-function cleanUpUnusedRow(args) {
-    if (args.isRoot) {
-        $.options.deleteRow($.closeWinRow, {animated : false});
-    }
-
-    if (args.isModal) {
-        $.options.deleteRow($.openChildWinRow, {animated : false});
-        deleteSection($.flowSection);
-    }
-
-    if (!args.isDrawer) {
-        deleteSection($.forDrawerSection);
-    }
-}
 
 /* --------------- HANDLE USER INTERACTIONS --------------- */
 
 function selectedOption(e) {
     if (!e.row.action) return false;
     if (e.row.action === "openModalWin") {
-        createAndOpenWindow({modal : true});
+        openWindow({modal : true});
     }
     else if (e.row.action === "openChildWin") {
-        createAndOpenWindow({modal : false});
+        openWindow({modal : false});
     }
     else if (e.row.action === "openLeftView") {
         $.windowManager.openLeftWindow();
@@ -38,7 +25,7 @@ function selectedOption(e) {
         $.windowManager.openRightWindow();
     }
     else if (e.row.action === "close") {
-        $.window.close();
+        $.window && $.window.close();
     }
     else if (e.row.action === "exitFlow") {
         $.closeFlow();
@@ -48,15 +35,9 @@ function selectedOption(e) {
     }
 }
 
-/* --------------- EMBEDDED METHODS --------------- */
-
-function createAndOpenWindow(args) {
+function openWindow(args) {
     // close previous window
-    if (args.modal) {
-        if ($.window) {
-            $.window.close();
-        }
-    }
+    args.modal && $.window && $.window.close();
 
     var viewCtrl = Alloy.createController('requires/view', {
         isModal : args.modal,
@@ -75,10 +56,6 @@ function createAndOpenWindow(args) {
     window.open();
 }
 
-function _setWindow(window) {
-    $.window = window;
-}
-
 /* --------------- HELPER METHODS --------------- */
 
 function deleteSection(section) {
@@ -88,6 +65,27 @@ function deleteSection(section) {
             break;
         }
     }
+}
+
+function cleanUpUnusedRow(args) {
+    if (args.isRoot) {
+        $.options.deleteRow($.closeWinRow, {animated : false});
+    }
+
+    if (args.isModal) {
+        $.options.deleteRow($.openChildWinRow, {animated : false});
+        deleteSection($.flowSection);
+    }
+
+    if (!args.isDrawer) {
+        deleteSection($.forDrawerSection);
+    }
+}
+
+/* --------------- EMBEDDED METHODS --------------- */
+
+function _setWindow(window) {
+    $.window = window;
 }
 
 /* --------------- EXPORT THE PUBLIC INTERFACE --------------- */

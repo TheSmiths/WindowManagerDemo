@@ -1,13 +1,11 @@
-/* -------------- INIT FUNCTION ---------- */
+/* -------------- INIT FUNCTIONS ---------- */
+
 (function constructor(args) {
     $.windowManager = args.windowManager;
-    _init();
+    initWindowManager();
 })(arguments[0] || {});
-/* --------------- HANDLE USER INTERACTIONS --------------- */
 
-/* --------------- EMBEDDED METHODS --------------- */
-
-function _init () {
+function initWindowManager() {
     $.windowManager.configure({ debug: true });
 
     $.windowManager.init({
@@ -20,8 +18,12 @@ function _init () {
     });
 }
 
+/* --------------- HANDLE USER INTERACTIONS --------------- */
+
+/* --------------- EMBEDDED METHODS --------------- */
+
 function _open() {
-    var flow = $.windowManager.createFlow(Alloy.createController('requires/view', {
+    $.flow = $.windowManager.createFlow(Alloy.createController('requires/view', {
         isRoot : true,
         isDrawer : true,
         windowManager : $.windowManager,
@@ -31,8 +33,7 @@ function _open() {
         title : "Drawer Manager 2.1.2"
     });
 
-    $.flow = flow;
-    flow.open();
+    $.flow.open();
 }
 
 function _close() {

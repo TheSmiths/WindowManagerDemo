@@ -1,11 +1,9 @@
 /* -------------- INIT FUNCTION ---------- */
+
 (function constructor(args) {
-    if (OS_ANDROID) {
-        exports.open =  function () {
-            $.container.open();
-        };
-    }
 })(arguments[0] || {});
+
+/* --------------- HANDLE USER INTERACTIONS --------------- */
 
 function selectedModule(e) {
     if (!e.row.type) return false;
@@ -24,4 +22,12 @@ function selectedModule(e) {
     return Alloy.createController(modules[e.row.type].filename, {
         windowManager : require(modules[e.row.type].src)
     }).open();
+}
+
+/* --------------- EXPORT THE PUBLIC INTERFACE --------------- */
+
+if (OS_ANDROID) {
+    exports.open =  function () {
+        $.container.open();
+    };
 }

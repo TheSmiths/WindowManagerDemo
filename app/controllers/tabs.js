@@ -1,8 +1,9 @@
 /* -------------- INIT FUNCTIONS ---------- */
+
 (function constructor(args) {
     $.windowManager = args.windowManager;
     initTabs();
-    _init();
+    initWindowManager();
 })(arguments[0] || {});
 
 function initTabs() {
@@ -28,26 +29,24 @@ function initTabs() {
     $.tabGroup.setTabs(tabs);
 }
 
-/* --------------- HANDLE USER INTERACTIONS --------------- */
-
-/* --------------- EMBEDDED METHODS --------------- */
-
-function _init () {
+function initWindowManager() {
     $.windowManager.configure({ debug: true });
 
     $.windowManager.init();
 }
 
+/* --------------- HANDLE USER INTERACTIONS --------------- */
+
+/* --------------- EMBEDDED METHODS --------------- */
+
 function _open() {
-    var flow = $.windowManager.createFlow({
-        // all style of root should be defined in styles files
+    $.flow = $.windowManager.createFlow({
         root : $.tabGroup,
         beforeCreating : function (root) {
             root.setActiveTab(root.tabs[0]);
         }
     });
 
-    $.flow = flow;
     flow.open();
 }
 
