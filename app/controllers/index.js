@@ -81,7 +81,8 @@ function selectedOption(e) {
 
 function openChildWindow(e) {
     var label = Ti.UI.createLabel({
-        text : 'Close Me'
+        text : 'Close Me',
+        color : 'black'
     });
     label.addEventListener('click', function closeWindow() {
         label.removeEventListener('click', closeWindow);
@@ -93,7 +94,8 @@ function openChildWindow(e) {
 
 function openModalWindow(e) {
     var label = Ti.UI.createLabel({
-        text : 'Close Me'
+        text : 'Close Me',
+        color : 'black'
     });
     label.addEventListener('click', function closeWindow() {
         label.removeEventListener('click', closeWindow);

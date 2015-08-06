@@ -1,3 +1,9 @@
 'Window' : {
     backgroundColor : 'white'
 }
+'Label' : {
+    color : 'black'
+}
+'TableViewRow' : {
+    color : 'black'
+}

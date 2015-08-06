@@ -4,21 +4,21 @@ var _currentFlow = null, // A reference to the current flow, will hold any new w
     };
 
 
-/* --------------- FACTORY METHODS --------------- */ 
+/* --------------- FACTORY METHODS --------------- */
 var _Factory = (function () {
     var count = 0;
-    return { 
+    return {
         newId: function () { return count++; },
         newWindow: function (options) {
             var platform = OS_IOS && "ios" || "android",
-                style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']), 
+                style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']),
                     _.extend(_config.defaultStyle[platform] || {}, options || {}));
             return Ti.UI.createWindow(style);
         },
         newFlowStub: function (flow) {
             return {
                 tabGroup: flow.root,
-                open: function openFlow() { _openFlow(flow); },  
+                open: function openFlow() { _openFlow(flow); },
                 close: function closeFlow() { setTimeout(function() { _closeFlow(flow); }, 0); }
             };
         },
@@ -70,14 +70,14 @@ function _createWindow(view, options) {
 
 
 
-/* --------------- EMBEDDED METHODS --------------- */ 
+/* --------------- EMBEDDED METHODS --------------- */
 /**
  * @method _openFlow
  * @private
  *
  * Open the given flow
  *
- * @param {Object} flow a reference to a representation of a flow. 
+ * @param {Object} flow a reference to a representation of a flow.
  */
 function _openFlow(flow) {
     flow.root.open();
@@ -102,7 +102,9 @@ function _openWindow(args) {
     if (!_currentFlow || _currentFlow.id !== args.flow.id) {
         throw("Unable to open the window in the current flow.");
     }
-
+    if (OS_ANDROID) {
+        args.flow.children.push(args.window);
+    }
     args.flow.root.getActiveTab().open(args.window, { animated : true});
 }
 
@@ -116,7 +118,7 @@ function _openWindow(args) {
  */
 function _closeFlow(flow) {
     /* On Android, all window should be closed separately */
-    OS_ANDROID && flow.children.each(function (window) { window.close(); });
+    OS_ANDROID && flow.children.map(function (window) { window.close(); });
     flow.root.close();
 
     /* Remove the flow if it is still active */
@@ -125,7 +127,7 @@ function _closeFlow(flow) {
     }
 }
 
-/** 
+/**
  * @method _closeWindow
  * @private
  *
@@ -146,7 +148,7 @@ function _closeWindow(args) {
     args.window.close();
 }
 
-/* --------------- TABS METHODS --------------- */ 
+/* --------------- TABS METHODS --------------- */
 
 
 /* -------------- INIT FUNCTIONS ---------- */
@@ -165,7 +167,7 @@ function _configure(args) {
             if (options.modal) {
                 log("Create new modal window");
             } else {
-                log("Create new window within flow #" + (_currentFlow && _currentFlow.id)); 
+                log("Create new window within flow #" + (_currentFlow && _currentFlow.id));
             }
             log("options: " + JSON.stringify(options, null, "  "));
             return _createWindow(view, options);
@@ -189,7 +191,7 @@ function _configure(args) {
             } else {
                 log("Close window in flow #" + args.flow.id);
             }
-           return origCloseWindow(args); 
+           return origCloseWindow(args);
         };
 
         /* Flows */
@@ -230,7 +232,7 @@ function _init(config) {
 
 /* --------------- Export the public Interface --------------- */
 
-/** 
+/**
  * @method createFlow
  *
  * Create and get a new flow stub. A flow represent a set of window that share a common
@@ -239,15 +241,15 @@ function _init(config) {
  *
  * @param {titanium: UI.View} View The view to place in that window.
  * @param {Object} options Options to give to the root window during its creation.
- * @return {Stub} A window stub to open and close the created window / flow. 
+ * @return {Stub} A window stub to open and close the created window / flow.
  */
 exports.createFlow = _createFlow;
 
-/** 
+/**
  * @method createWindow
  *
  * Create and get a new window stub. A window will be opened within the flow it has been created.
- * It's not recommended to open a window within a flow which has been closed; 
+ * It's not recommended to open a window within a flow which has been closed;
  *
  * @param {titanium: UI.View} View The view to place in that window.
  * @param {Object} options Options to give to the window during its creation.
@@ -272,7 +274,7 @@ exports.configure = _configure;
  *
  * Initialize the tabs manager
  *
- * @param {Object} config 
+ * @param {Object} config
  * @param {Object} [config.defaultStyle] Default style to apply to the window.
  */
 exports.init = _init;

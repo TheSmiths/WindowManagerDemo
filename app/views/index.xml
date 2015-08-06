@@ -1,6 +1,6 @@
 <Alloy>
     <!-- Index -->
-    <NavigationWindow>
+    <NavigationWindow platform="ios">
         <Window title="Window Manager Demo">
             <TableView id="demos" onClick="selectedDemo">
                     <TableViewRow title="Drawer Manager 2.1.2"/>
@@ -8,6 +8,13 @@
             </TableView>
         </Window>
     </NavigationWindow>
+
+    <Window title="Window Manager Demo" platform="android">
+        <TableView id="demos" onClick="selectedDemo">
+            <TableViewRow title="Drawer Manager 2.1.2"/>
+            <TableViewRow title="Tabs Manager 0.9.1"/>
+        </TableView>
+    </Window>
 
 
     <!-- For DrawerManager.2.1.2 -->
