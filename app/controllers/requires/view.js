@@ -5,6 +5,8 @@
     $.closeFlow = args.closeFlow;
     $.isDrawer = args.isDrawer;
 
+    args.styles && $.options.applyProperties(args.styles);
+
     cleanUpUnusedRow(args);
 })(arguments[0] || {});
 

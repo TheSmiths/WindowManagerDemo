@@ -1,5 +1,11 @@
+'NavigationWindow[platform=ios]' : {
+    backgroundColor : '#ecf0f1'
+}
 'Window' : {
     backgroundColor : '#ecf0f1'
+}
+'Window[platform=ios]' : {
+    translucent : true
 }
 'View' : {
     backgroundColor : '#ecf0f1'
