@@ -37,7 +37,7 @@ function selectedOption(e) {
 
 function openWindow(args) {
     // close previous window
-    args.modal && $.window && $.window.close();
+    args.modal && $.window && $.window.modal && $.window.close();
 
     var viewCtrl = Alloy.createController('requires/view', {
         isModal : args.modal,
