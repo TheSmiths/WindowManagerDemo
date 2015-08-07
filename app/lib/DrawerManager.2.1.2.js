@@ -11,28 +11,27 @@ var _DrawerModule = OS_ANDROID ? require('com.tripvi.drawerlayout') : require('d
     _drawer = null;
 
 
-/* --------------- FACTORY METHODS --------------- */
+/* --------------- FACTORY METHODS --------------- */ 
 var _Factory = (function () {
     var count = 0;
-    return {
+    return { 
         newId: function () { return count++; },
         newWindow: function (options) {
             var platform = OS_IOS && "ios" || "android",
-                style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']),
+                style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']), 
                     _.extend(_config.defaultStyle[platform] || {}, options || {}));
             return Ti.UI.createWindow(style);
         },
         newFlowStub: function (flow) {
             return {
                 window: flow.root,
-                open: function openFlow() { _openFlow(flow); },
+                open: function openFlow() { _openFlow(flow); },  
                 close: function closeFlow() { setTimeout(function() { _closeFlow(flow); }, 1); }
             };
         },
         newWindowStub: function (window, flow, asModal, view) {
             return {
                 window: window,
-                modal : asModal,
                 open: function openWindow() { _openWindow(window, flow, asModal, view); },
                 close: function closeWindow() { _closeWindow(window, flow, asModal, view); }
             };
@@ -42,13 +41,13 @@ var _Factory = (function () {
 
 
 function _createFlow(view, options) {
-    var flow = {
-            id: _Factory.newId(),
+    var flow = { 
+            id: _Factory.newId(), 
             children: OS_ANDROID ? [] : undefined,
             viewStack: OS_ANDROID ? [] : undefined,
             navigationWindow: OS_IOS ? null : undefined,
             root: null
-        };
+        }; 
 
     /* Handle options correcly */
     options = options || {};
@@ -85,7 +84,7 @@ function _createFlow(view, options) {
 
 /* Create a window, more doc at the end of the file. */
 function _createWindow(view, options) {
-    var window = _Factory.newWindow(options),
+    var window = _Factory.newWindow(options), 
         withDrawer;
 
     if (OS_IOS && options.modal) {
@@ -110,20 +109,20 @@ function _createWindow(view, options) {
     ((OS_IOS && !options.modal) || (OS_ANDROID && !withDrawer)) && window.add(view);
 
     /* Return the stub */
-    return _Factory.newWindowStub(window, _currentFlow, options.modal,
+    return _Factory.newWindowStub(window, _currentFlow, options.modal, 
         OS_ANDROID && withDrawer ? view : undefined);
 }
 
 
 
-/* --------------- EMBEDDED METHODS --------------- */
+/* --------------- EMBEDDED METHODS --------------- */ 
 /**
  * @method _openFlow
  * @private
  *
  * Open the given flow
  *
- * @param {Object} flow a reference to a representation of a flow.
+ * @param {Object} flow a reference to a representation of a flow. 
  */
 function _openFlow(flow) {
     if (OS_IOS && flow.withDrawer) {
@@ -141,7 +140,7 @@ function _openFlow(flow) {
 
             var previousWindow = flow.children.length > 0 ?
                     flow.children[flow.children.length - 1] : flow.root;
-
+            
             previousWindow.remove(_drawer);
         }(_currentFlow));
 
@@ -151,7 +150,7 @@ function _openFlow(flow) {
         }
 
         flow.root.open();
-    }
+    } 
     _currentFlow = flow;
 }
 
@@ -175,24 +174,20 @@ function _openWindow(window, flow, asModal, view) {
             (function removeDrawerFromPrevious(flow) {
                 var previousView = flow.viewStack[flow.viewStack.length - 1],
                     previousWindow;
-
-                if (flow.children.length > 0) {
+                
+                if (flow.children.length > 0) { 
                     previousWindow = flow.children[flow.children.length - 1];
                 } else {
                     previousWindow = flow.root;
                 }
                 previousWindow.remove(_drawer);
-                window = previousWindow;
             }(flow));
             _drawer.setCenterView(view);
             window.add(_drawer);
             flow.viewStack.push(view);
         }
-        else {
-            /* for modal */
-            flow.children.push(window);
-            window.open();
-        }
+        flow.children.push(window);
+        window.open();
     } else if (OS_IOS) {
         flow.root.openWindow(window, { animated: true });
     }
@@ -210,7 +205,7 @@ function _closeFlow(flow) {
     /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
      * not windows but views and do not need to be closed */
     OS_ANDROID && !flow.withDrawer && flow.children.map(function (w) { w.close(); });
-    OS_IOS && flow.withDrawer && _currentFlow.withDrawer && _drawer.close();
+    OS_IOS && flow.withDrawer && !_currentFlow.withDrawer && _drawer.close();
     flow.root.close();
 
     /* Remove the flow if it is still active */
@@ -219,7 +214,7 @@ function _closeFlow(flow) {
     }
 }
 
-/**
+/** 
  * @method _closeWindow
  * @private
  *
@@ -230,41 +225,38 @@ function _closeFlow(flow) {
  * @param {Boolean} asModal Close the modal window without impacting the flow
  */
 function _closeWindow(window, flow, asModal, view) {
-    if (OS_ANDROID && flow.withDrawer && !asModal) {
-        (function removeFromStack(view, flow) {
-            var index = flow.viewStack.indexOf(view);
+    var index = OS_ANDROID && flow.children.indexOf(window) || 0;
 
-            if (index === -1) { throw("View already closed"); } // Really weird if happens.
+    if (asModal) { return window.close(); }
+    if (index === -1) { throw("Window already closed"); }
 
-            window.remove(_drawer);
-            if (index === flow.viewStack.length - 1) {
-                /* Closing the last window, the one displayed in the drawer */
-                _drawer.setCenterView(flow.viewStack[index - 1]); // There is at least 2 views
-                if (flow.children.length > 1) { // There are previous windows
-                    flow.children[index - 2].add(_drawer);
-                } else { //Otherwise, back to the root
-                    flow.root.add(_drawer);
-                }
+    OS_ANDROID && flow.withDrawer && (function removeFromStack(view, flow) {
+        var index = flow.viewStack.indexOf(view);
+
+        if (index === -1) { throw("View already closed"); } // Really weird if happens.
+
+        window.remove(_drawer);
+        if (index === flow.viewStack.length - 1) { 
+            /* Closing the last window, the one displayed in the drawer */
+            _drawer.setCenterView(flow.viewStack[index - 1]); // There is at least 2 views 
+            if (flow.children.length > 1) { // There are previous windows 
+                flow.children[index - 2].add(_drawer);
+            } else { //Otherwise, back to the root
+                flow.root.add(_drawer);
             }
-            flow.viewStack.splice(index, 1);
-        }(view, flow));
-    }
-    else {
-        var index = OS_ANDROID && flow.children.indexOf(window) || 0;
+        }
+        flow.viewStack.splice(index, 1);
+    }(view, flow));
 
-        if (asModal) { return window.close(); }
-        if (index === -1) { throw("Window already closed"); }
-
-        OS_ANDROID && flow.children.splice(index, 1);
-        window.close();
-    }
+    OS_ANDROID && flow.children.splice(index, 1);
+    window.close();
 }
 
-/* --------------- DRAWER METHODS --------------- */
+/* --------------- DRAWER METHODS --------------- */ 
 /**
  * @method _createDrawer
  * @private
- *
+ * 
  * Create a new instance of the drawer (NappDrawer for iOS, tripvi Drawer for Android).
  *
  * @return {Object} An instance of the drawer.
@@ -272,7 +264,7 @@ function _closeWindow(window, flow, asModal, view) {
 function _createDrawer() {
     var drawerInstance;
 
-    if (OS_IOS) {
+    if (OS_IOS) { 
         drawerInstance = {
             fullscreen: false,
             centerWindow: Ti.UI.createWindow(),
@@ -319,15 +311,15 @@ function _createDrawer() {
     return drawerInstance;
 }
 
-function _toggleLeftWindow() {
+function _toggleLeftWindow() { 
     if (_config.leftView !== null) {
-        _drawer.toggleLeftWindow();
+        _drawer.toggleLeftWindow(); 
     }
 }
 
-function _toggleRightWindow() {
+function _toggleRightWindow() { 
     if (_config.rightView !== null) {
-        _drawer.toggleRightWindow();
+        _drawer.toggleRightWindow(); 
     }
 }
 
@@ -393,7 +385,7 @@ function _configure(args) {
             if (options.modal) {
                 log("Create new modal window");
             } else {
-                log("Create new window within flow #" + (_currentFlow && _currentFlow.id));
+                log("Create new window within flow #" + (_currentFlow && _currentFlow.id)); 
             }
             log("options: " + JSON.stringify(options, null, "  "));
             return _createWindow(view, options);
@@ -417,7 +409,7 @@ function _configure(args) {
             } else {
                 log("Close window in flow #" + flow.id);
             }
-           return origCloseWindow(window, flow, asModal, view);
+           return origCloseWindow(window, flow, asModal, view); 
         };
 
         /* Flows */
@@ -466,7 +458,7 @@ function _init(config) {
 
 /* --------------- Export the public Interface --------------- */
 
-/**
+/** 
  * @method createFlow
  *
  * Create and get a new flow stub. A flow represent a set of window that share a common
@@ -476,15 +468,15 @@ function _init(config) {
  * @param {titanium: UI.View} View The view to place in that window.
  * @param {Object} options Options to give to the root window during its creation. May also contain
  * a special key "drawer" to specify if a drawer should be bound with the window or not.
- * @return {Stub} A window stub to open and close the created window / flow.
+ * @return {Stub} A window stub to open and close the created window / flow. 
  */
 exports.createFlow = _createFlow;
 
-/**
+/** 
  * @method createWindow
  *
  * Create and get a new window stub. A window will be opened within the flow it has been created.
- * It's not recommended to open a window within a flow which has been closed;
+ * It's not recommended to open a window within a flow which has been closed; 
  *
  * @param {titanium: UI.View} View The view to place in that window.
  * @param {Object} options Options to give to the window during its creation. May also contain
@@ -510,10 +502,10 @@ exports.configure = _configure;
  *
  * Initialize the drawer manager
  *
- * @param {Object} config
- * @param {Function} [config.leftView] The view that should be placed in the left panel of the drawer.
+ * @param {Object} config 
+ * @param {Function} [config.leftView] The view that should be placed in the left panel of the drawer.  
  * @param {Number} [config.leftDrawerWidth=200] The width of the left panel
- * @param {Function} [config.rightView] The view that should be placed in the right panel of the drawer.
+ * @param {Function} [config.rightView] The view that should be placed in the right panel of the drawer.  
  * @param {Number} [config.rightDrawerWidth=200] The width of the right panel @param
  * @param {Boolean} [config.defaultWithDrawer=true] If true, every window will be created with a
  * drawer by default.
@@ -521,14 +513,14 @@ exports.configure = _configure;
  */
 exports.init = _init;
 
-/**
+/** 
  * @method toggleLeftWindow
  *
  * Toggle the left drawer window
  */
 exports.toggleLeftWindow = _toggleLeftWindow;
 
-/**
+/** 
  * @method toggleRightWindow
  *
  * Toggle the right drawer window
