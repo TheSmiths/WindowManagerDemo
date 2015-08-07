@@ -39,6 +39,12 @@ function openWindow(args) {
     // close previous window
     args.modal && $.window && $.window.modal && $.window.close();
 
+    // focus on centerWindow
+    if (OS_IOS) {
+        $.isDrawer && $.windowManager.closeLeftWindow();
+        $.isDrawer && $.windowManager.closeRightWindow();
+    }
+
     var viewCtrl = Alloy.createController('requires/view', {
         isModal : args.modal,
         windowManager : $.windowManager
