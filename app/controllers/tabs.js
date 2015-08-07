@@ -47,7 +47,7 @@ function _open() {
         }
     });
 
-    flow.open();
+    $.flow.open();
 }
 
 function _close() {
