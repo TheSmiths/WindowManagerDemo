@@ -10,11 +10,35 @@ function initWindowManager() {
 
     $.windowManager.init({
         leftView : (function () {
-            return $.leftView;
+            var view = Alloy.createController('requires/view', {
+                isRoot : true,
+                isDrawer : true,
+                windowManager : $.windowManager,
+                closeFlow : _close
+            }).getView();
+
+            if (OS_IOS) {
+                var window = Ti.UI.createWindow();
+                window.add(view);
+            }
+
+            return OS_IOS ? window : view;
         })(),
         rightView : (function () {
-            return $.rightView;
-        })()
+            var view = Alloy.createController('requires/view', {
+                isRoot : true,
+                isDrawer : true,
+                windowManager : $.windowManager,
+                closeFlow : _close
+            }).getView();
+
+            if (OS_IOS) {
+                var window = Ti.UI.createWindow();
+                window.add(view);
+            }
+
+            return OS_IOS ? window : view;
+        })(),
     });
 }
 

@@ -1,19 +1,15 @@
 <Alloy>
     <!-- Left View -->
     <Window platform="ios" id="leftView">
-        <Label>Left View</Label>
     </Window>
 
     <View platform="android" id="leftView">
-        <Label>Left View</Label>
     </View>
 
     <!-- Right View -->
     <Window id="rightView">
-        <Label>Right View</Label>
     </Window>
 
     <View platform="android" id="rightView">
-        <Label>Right View</Label>
     </View>
 </Alloy>
