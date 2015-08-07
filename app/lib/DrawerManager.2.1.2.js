@@ -32,6 +32,7 @@ var _Factory = (function () {
         newWindowStub: function (window, flow, asModal, view) {
             return {
                 window: window,
+                modal : asModal,
                 open: function openWindow() { _openWindow(window, flow, asModal, view); },
                 close: function closeWindow() { _closeWindow(window, flow, asModal, view); }
             };
@@ -181,13 +182,17 @@ function _openWindow(window, flow, asModal, view) {
                     previousWindow = flow.root;
                 }
                 previousWindow.remove(_drawer);
+                window = previousWindow;
             }(flow));
             _drawer.setCenterView(view);
             window.add(_drawer);
             flow.viewStack.push(view);
         }
-        flow.children.push(window);
-        window.open();
+        else {
+            /* for modal */
+            flow.children.push(window);
+            window.open();
+        }
     } else if (OS_IOS) {
         flow.root.openWindow(window, { animated: true });
     }
@@ -204,9 +209,10 @@ function _openWindow(window, flow, asModal, view) {
 function _closeFlow(flow) {
     /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
      * not windows but views and do not need to be closed */
-    OS_ANDROID && flow.children.map(function (w) { w.close(); });
+    OS_ANDROID && !flow.withDrawer && flow.children.map(function (w) { w.close(); });
     OS_IOS && flow.withDrawer && _currentFlow.withDrawer && _drawer.close();
     flow.root.close();
+
     /* Remove the flow if it is still active */
     if (_currentFlow.id === flow.id) {
         _currentFlow = null;
@@ -224,31 +230,34 @@ function _closeFlow(flow) {
  * @param {Boolean} asModal Close the modal window without impacting the flow
  */
 function _closeWindow(window, flow, asModal, view) {
-    var index = OS_ANDROID && flow.children.indexOf(window) || 0;
+    if (OS_ANDROID && flow.withDrawer && !asModal) {
+        (function removeFromStack(view, flow) {
+            var index = flow.viewStack.indexOf(view);
 
-    if (asModal) { return window.close(); }
-    if (index === -1) { throw("Window already closed"); }
+            if (index === -1) { throw("View already closed"); } // Really weird if happens.
 
-    OS_ANDROID && flow.withDrawer && (function removeFromStack(view, flow) {
-        var index = flow.viewStack.indexOf(view);
-
-        if (index === -1) { throw("View already closed"); } // Really weird if happens.
-
-        window.remove(_drawer);
-        if (index === flow.viewStack.length - 1) {
-            /* Closing the last window, the one displayed in the drawer */
-            _drawer.setCenterView(flow.viewStack[index - 1]); // There is at least 2 views
-            if (flow.children.length > 1) { // There are previous windows
-                flow.children[index - 2].add(_drawer);
-            } else { //Otherwise, back to the root
-                flow.root.add(_drawer);
+            window.remove(_drawer);
+            if (index === flow.viewStack.length - 1) {
+                /* Closing the last window, the one displayed in the drawer */
+                _drawer.setCenterView(flow.viewStack[index - 1]); // There is at least 2 views
+                if (flow.children.length > 1) { // There are previous windows
+                    flow.children[index - 2].add(_drawer);
+                } else { //Otherwise, back to the root
+                    flow.root.add(_drawer);
+                }
             }
-        }
-        flow.viewStack.splice(index, 1);
-    }(view, flow));
+            flow.viewStack.splice(index, 1);
+        }(view, flow));
+    }
+    else {
+        var index = OS_ANDROID && flow.children.indexOf(window) || 0;
 
-    OS_ANDROID && flow.children.splice(index, 1);
-    window.close();
+        if (asModal) { return window.close(); }
+        if (index === -1) { throw("Window already closed"); }
+
+        OS_ANDROID && flow.children.splice(index, 1);
+        window.close();
+    }
 }
 
 /* --------------- DRAWER METHODS --------------- */
