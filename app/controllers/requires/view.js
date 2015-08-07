@@ -41,13 +41,15 @@ function openWindow(args) {
 
     var viewCtrl = Alloy.createController('requires/view', {
         isModal : args.modal,
-        windowManager : $.windowManager,
-        closeFlow : $.closeFlow
+        windowManager : $.windowManager
     });
     var window = $.windowManager.createWindow(viewCtrl.getView(), {
         modal : args.modal,
         drawer : $.isDrawer
     });
+
+    // we need this line for closing previous modal window if need
+    window.modal = args.modal;
 
     // send the window which contain the view to the view controller
     // so we can call close window into view controller
@@ -71,10 +73,12 @@ function cleanUpUnusedRow(args) {
     if (args.isRoot) {
         $.options.deleteRow($.closeWinRow, {animated : false});
     }
+    else {
+        deleteSection($.flowSection);
+    }
 
     if (args.isModal) {
         $.options.deleteRow($.openChildWinRow, {animated : false});
-        deleteSection($.flowSection);
     }
 
     if (!args.isDrawer) {
