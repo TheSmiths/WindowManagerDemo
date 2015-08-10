@@ -35,17 +35,7 @@ var _Factory = (function () {
 
 function _createFlow(args) {
     root = _Factory.newWindow(args.options);
-
-    /* On iOS, we need to create a new navigation window, will be our root. */
-    if (OS_IOS) {
-        root = (function createNavWindow(args) {
-            var window = _Factory.newWindow(options);
-            window.add(args.view);
-            return Ti.UI.iOS.createNavigationWindow({ window: window });
-        }(args));
-    } else if (OS_ANDROID) {
-        root.add(args.view);
-    }
+    root.add(args.view);
 
     return _Factory.newFlowStub({
         id: _Factory.newId(),
@@ -59,11 +49,11 @@ function _createFlows(views) {
 
     for (var i = 0, max = views.length; i < max; i++) {
         tabs.push(
-            Ti.UI.createTab(_.extend(views[i].options, {
-                window : _createFlow({
-                    view : views[i].view
-                }).window
-            })));
+        Ti.UI.createTab(_.extend(views[i].options, {
+            window : _createFlow({
+                view : views[i].view
+            }).window
+        })));
     }
 
     return Ti.UI.createTabGroup({
