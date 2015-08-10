@@ -17,7 +17,7 @@ var _Factory = (function () {
         },
         newFlowStub: function (flow) {
             return {
-                tabGroup: flow.root,
+                window: flow.root,
                 open: function openFlow() { _openFlow(flow); },
                 close: function closeFlow() { setTimeout(function() { _closeFlow(flow); }, 0); }
             };
@@ -34,16 +34,42 @@ var _Factory = (function () {
 
 
 function _createFlow(args) {
+    root = _Factory.newWindow(args.options);
 
-    args.beforeCreating && args.beforeCreating(args.root);
+    /* On iOS, we need to create a new navigation window, will be our root. */
+    if (OS_IOS) {
+        root = (function createNavWindow(args) {
+            var window = _Factory.newWindow(options);
+            window.add(args.view);
+            return Ti.UI.iOS.createNavigationWindow({ window: window });
+        }(args));
+    } else if (OS_ANDROID) {
+        root.add(args.view);
+    }
 
     return _Factory.newFlowStub({
         id: _Factory.newId(),
-        root: args.root,
+        root: root,
         children: OS_ANDROID ? [] : undefined
     });
 }
 
+function _createFlows(views) {
+    var tabs = [];
+
+    for (var i = 0, max = views.length; i < max; i++) {
+        tabs.push(
+            Ti.UI.createTab(_.extend(views[i].options, {
+                window : _createFlow({
+                    view : views[i].view
+                }).window
+            })));
+    }
+
+    return Ti.UI.createTabGroup({
+        tabs : tabs
+    });
+}
 
 /* Create a window, more doc at the end of the file. */
 function _createWindow(view, options) {
@@ -215,7 +241,7 @@ function _configure(args) {
     }
 
     /* Avoid double init */
-    exports.configure = _configure = function () { Ti.API.error("Init already done."); }
+    exports.configure = _configure = function () { Ti.API.error("Init already done."); };
 
     /* Allow chaining */
     return exports;
@@ -224,7 +250,7 @@ function _configure(args) {
 function _init(config) {
     _.extend(_config, config || {});
 
-    exports.init = _init = function () { Ti.API.error("Configure already done."); }
+    exports.init = _init = function () { Ti.API.error("Configure already done."); };
 
     /* Allow chaining */
     return exports;
@@ -244,6 +270,8 @@ function _init(config) {
  * @return {Stub} A window stub to open and close the created window / flow.
  */
 exports.createFlow = _createFlow;
+
+exports.createFlows = _createFlows;
 
 /**
  * @method createWindow
