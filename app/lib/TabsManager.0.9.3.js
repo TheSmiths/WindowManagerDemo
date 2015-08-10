@@ -147,12 +147,9 @@ function _closeFlow(flow) {
  * @param {Object} [args.flow] A representation of a flow
  */
 function _closeWindow(args) {
-    var index = OS_ANDROID && args.flow.children.indexOf(args.window) || 0;
-
     if (args.asModal) { return args.window.close(); }
     if (index === -1) { throw("Window already closed"); }
 
-    OS_ANDROID && args.flow.children.splice(index, 1);
     args.window.close();
 }
 
