@@ -147,9 +147,6 @@ function _closeFlow(flow) {
  * @param {Object} [args.flow] A representation of a flow
  */
 function _closeWindow(args) {
-    if (args.asModal) { return args.window.close(); }
-    if (index === -1) { throw("Window already closed"); }
-
     args.window.close();
 }
 
