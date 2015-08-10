@@ -14,30 +14,42 @@ function initWindowManager() {
                 isRoot : true,
                 isDrawer : true,
                 windowManager : $.windowManager,
-                closeFlow : _close
+                closeFlow : _close,
+                styles : {
+                    top : OS_IOS ? 20 : 0
+                }
             }).getView();
 
             if (OS_IOS) {
-                var window = Ti.UI.createWindow();
+                var window = Ti.UI.createWindow({
+                    backgroundColor : '#ecf0f1'
+                });
                 window.add(view);
+                return window;
             }
 
-            return OS_IOS ? window : view;
+            return view;
         })(),
         rightView : (function () {
             var view = Alloy.createController('requires/view', {
                 isRoot : true,
                 isDrawer : true,
                 windowManager : $.windowManager,
-                closeFlow : _close
+                closeFlow : _close,
+                styles : {
+                    top : OS_IOS ? 20 : 0
+                }
             }).getView();
 
             if (OS_IOS) {
-                var window = Ti.UI.createWindow();
+                var window = Ti.UI.createWindow({
+                    backgroundColor : '#ecf0f1'
+                });
                 window.add(view);
+                return window;
             }
 
-            return OS_IOS ? window : view;
+            return view;
         })(),
     });
 }
