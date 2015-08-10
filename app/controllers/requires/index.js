@@ -15,7 +15,7 @@ function selectedModule(e) {
         },
         'tabs' : {
             filename : 'tabs',
-            src : 'TabsManager.0.9.2'
+            src : 'TabsManager.0.9.3'
         }
     };
 

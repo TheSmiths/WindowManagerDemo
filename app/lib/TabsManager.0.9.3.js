@@ -34,32 +34,29 @@ var _Factory = (function () {
 
 
 function _createFlow(args) {
-    root = _Factory.newWindow(args.options);
-    root.add(args.view);
-
-    return _Factory.newFlowStub({
-        id: _Factory.newId(),
-        root: root,
-        children: OS_ANDROID ? [] : undefined
-    });
-}
-
-function _createFlows(views) {
     var tabs = [];
+    for (var i = 0, max = args.views.length; i < max; i++) {
+        var window = Ti.UI.createWindow(args.options.tabs[i].windowProperties);
+        window.add(args.views[i]);
 
-    for (var i = 0, max = views.length; i < max; i++) {
-        tabs.push(
-        Ti.UI.createTab(_.extend(views[i].options, {
-            window : _createFlow({
-                view : views[i].view
-            }).window
+        tabs.push(Ti.UI.createTab(_.extend(args.options.tabs[i], {
+            window : window
         })));
     }
 
-    return Ti.UI.createTabGroup({
+    var root = Ti.UI.createTabGroup({
         tabs : tabs
     });
+
+    /* Handle options correcly */
+    root.setActiveTab(args.options.activeTab);
+
+    return _Factory.newFlowStub({
+        id: _Factory.newId(),
+        root: root
+    });
 }
+
 
 /* Create a window, more doc at the end of the file. */
 function _createWindow(view, options) {
@@ -118,9 +115,6 @@ function _openWindow(args) {
     if (!_currentFlow || _currentFlow.id !== args.flow.id) {
         throw("Unable to open the window in the current flow.");
     }
-    if (OS_ANDROID) {
-        args.flow.children.push(args.window);
-    }
     args.flow.root.getActiveTab().open(args.window, { animated : true});
 }
 
@@ -133,8 +127,6 @@ function _openWindow(args) {
  * @param {Object} flow A reference to a representation of a flow
  */
 function _closeFlow(flow) {
-    /* On Android, all window should be closed separately */
-    OS_ANDROID && flow.children.map(function (window) { window.close(); });
     flow.root.close();
 
     /* Remove the flow if it is still active */
@@ -231,7 +223,7 @@ function _configure(args) {
     }
 
     /* Avoid double init */
-    exports.configure = _configure = function () { Ti.API.error("Init already done."); };
+    exports.configure = _configure = function () { Ti.API.error("Init already done."); }
 
     /* Allow chaining */
     return exports;
@@ -240,7 +232,7 @@ function _configure(args) {
 function _init(config) {
     _.extend(_config, config || {});
 
-    exports.init = _init = function () { Ti.API.error("Configure already done."); };
+    exports.init = _init = function () { Ti.API.error("Configure already done."); }
 
     /* Allow chaining */
     return exports;
@@ -255,13 +247,12 @@ function _init(config) {
  * feature of the app. Closing a flow will cause all window opened within this flow to be closed
  * too. For iOS, it's similar to using a NavigationWindow; On Android, it will mimic that behavior.
  *
- * @param {titanium: UI.View} View The view to place in that window.
- * @param {Object} options Options to give to the root window during its creation.
+ * @param {[titanium: UI.View]} Views The views to place in tabs
+ * @param {Object} options Options to give to the root window(tab group) during its creation.
+ * @param {Object} [options.tabs] Styles to apply to the tab and the window as well.
  * @return {Stub} A window stub to open and close the created window / flow.
  */
 exports.createFlow = _createFlow;
-
-exports.createFlows = _createFlows;
 
 /**
  * @method createWindow
@@ -278,7 +269,8 @@ exports.createWindow = _createWindow;
 /**
  * @method configure
  *
- * Configure the component.  Only expect a debug option or not. There is no external dependency.
+ * Configure the component.  Only expect a debug option or not.
+ * There is no external dependency.
  *
  * @param {Object} args
  * @param {Boolean} args.debug If true, will decorate all functions with some logs

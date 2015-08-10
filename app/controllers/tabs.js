@@ -16,32 +16,52 @@ function initWindowManager() {
 /* --------------- EMBEDDED METHODS --------------- */
 
 function _open() {
-    var views = [];
-
-    for (var i = 0, max = 3; i < max; i++) {
-        views.push({
-            view : Alloy.createController('requires/view', {
-                isRoot : true,
-                windowManager : $.windowManager,
-                closeFlow : _close
-            }).getView(),
-            options : {
-                title : 'Tab' + (i + 1)
+    $.flow = $.windowManager.createFlow({
+        views : (function () {
+            var views = [];
+            for (var i = 0, max = 3; i < max; i++) {
+                views.push(Alloy.createController('requires/view', {
+                    isRoot : true,
+                    windowManager : $.windowManager,
+                    closeFlow : _close
+                }).getView());
             }
-        });
-    }
+            return views;
+        })(),
+        options : {
+            activeTab : 1,
+            tabs : [
+                {
+                    title : 'Tab 1',
+                    windowProperties : {
+                        title : 'Win 1'
+                    }
+                },
+                {
+                    title : 'Tab 2',
+                    windowProperties : {
+                        title : 'Win 2'
+                    }
+                },
+                {
+                    title : 'Tab 3',
+                    windowProperties : {
+                        title : 'Win 3'
+                    }
+                }
+            ]
+        }
+    });
 
-    $.tabGroup = $.windowManager.createFlows(views);
-
-    $.tabGroup.open();
+    $.flow.open();
 }
 
 function _close() {
-    $.tabGroup.close();
+    $.flow.close();
 
     // Clean up
     delete $.windowManager;
-    delete $.tabGroup;
+    delete $.flow;
 }
 
 /* --------------- EXPORT THE PUBLIC INTERFACE --------------- */
