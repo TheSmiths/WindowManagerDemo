@@ -3,6 +3,9 @@
 (function constructor(args) {
     $.windowManager = args.windowManager;
     initWindowManager();
+
+    /* ONLY FOR DEMO */
+    $.isAllowToCloseRoot = args.isAllowToCloseRoot;
 })(arguments[0] || {});
 
 function initWindowManager() {
@@ -57,8 +60,14 @@ function _open() {
 }
 
 function _close() {
-    /* It should $.flow.close() in a production */
-    $.flow.window.close();
+    /* ONLY FOR DEMO */
+    /* It should only $.flow.close() in a production */
+    if ($.isAllowToCloseRoot) {
+        $.flow.close();
+    }
+    else {
+        $.flow.window.close();
+    }
 }
 
 /* --------------- EXPORT THE PUBLIC INTERFACE --------------- */
