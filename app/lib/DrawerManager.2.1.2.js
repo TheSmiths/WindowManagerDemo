@@ -204,6 +204,10 @@ function _openWindow(window, flow, asModal, view) {
 function _closeFlow(flow) {
     /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
      * not windows but views and do not need to be closed */
+    if (flow.id === 0) {
+        Ti.API.error('Can not close a root flow');
+        return false;
+    }
     OS_ANDROID && !flow.withDrawer && flow.children.map(function (w) { w.close(); });
     OS_IOS && flow.withDrawer && !_currentFlow.withDrawer && _drawer.close();
     flow.root.close();

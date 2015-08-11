@@ -142,6 +142,10 @@ function _openWindow(args) {
  * @param {Object} flow A reference to a representation of a flow
  */
 function _closeFlow(flow) {
+    if (flow.id === 0) {
+        Ti.API.error('Can not close a root flow');
+        return false;
+    }
     flow.root.close();
 
     /* Remove the flow if it is still active */
