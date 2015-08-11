@@ -34,8 +34,14 @@ var _Factory = (function () {
 
 
 function _createFlow(args) {
+    if (args.views.length !== args.options.tabs.length) {
+        throw("The length of args.views is not equal with the length of args.options.tabs");
+    }
+
+    /* create [Ti.UI.Tab] from args.views */
     var tabs = [];
     for (var i = 0, max = args.views.length; i < max; i++) {
+        /* create a window with properties */
         var window = Ti.UI.createWindow(args.options.tabs[i].windowProperties);
         window.add(args.views[i]);
 
@@ -44,12 +50,18 @@ function _createFlow(args) {
         })));
     }
 
+    /* root is a Ti.UI.TabGroup */
     var root = Ti.UI.createTabGroup({
         tabs : tabs
     });
 
-    /* Handle options correcly */
+    /* Handle extra options correcly */
     root.setActiveTab(args.options.activeTab);
+
+    /* Create and return the stub
+     * We don't need to worry about viewStack because there is no 'inline' window here
+     * no children as well because the platform handle the stack of window by default
+     */
 
     return _Factory.newFlowStub({
         id: _Factory.newId(),
@@ -63,6 +75,7 @@ function _createWindow(view, options) {
     var window = _Factory.newWindow(options);
     window.add(view);
 
+    /* Handle the modal option */
     if (OS_IOS && options.modal) {
         window = Ti.UI.iOS.createNavigationWindow({
             autoAdjustScrollViewInsets: false,
@@ -115,6 +128,8 @@ function _openWindow(args) {
     if (!_currentFlow || _currentFlow.id !== args.flow.id) {
         throw("Unable to open the window in the current flow.");
     }
+
+    /* Open a children window from current active tab */
     args.flow.root.getActiveTab().open(args.window, { animated : true});
 }
 
@@ -243,7 +258,9 @@ function _init(config) {
  *
  * @param {[titanium: UI.View]} Views The views to place in tabs
  * @param {Object} options Options to give to the root window(tab group) during its creation.
- * @param {Object} [options.tabs] Styles to apply to the tab and the window as well.
+ * @param {Object} [options.tabs] Styles to apply to the tab as well.
+ * @param {Object} [options.tabs[i].windowProperties] Styles to apply to the window
+ * which is contained in tab as well.
  * @return {Stub} A window stub to open and close the created window / flow.
  */
 exports.createFlow = _createFlow;
