@@ -73,11 +73,8 @@ function _open() {
 }
 
 function _close() {
-    $.flow.close();
-
-    // Clean up
-    delete $.windowManager;
-    delete $.flow;
+    /* It should $.flow.close() in a production */
+    $.flow.window.close();
 }
 
 /* --------------- EXPORT THE PUBLIC INTERFACE --------------- */
