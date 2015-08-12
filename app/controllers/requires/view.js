@@ -14,6 +14,7 @@
 
 function selectedOption(e) {
     if (!e.row.action) return false;
+
     if (e.row.action === "openModalWin") {
         openWindow({modal : true});
     }
@@ -28,9 +29,6 @@ function selectedOption(e) {
     }
     else if (e.row.action === "close") {
         $.window && $.window.close();
-    }
-    else if (e.row.action === "exitFlow") {
-        $.closeFlow();
     }
     else {
         console.error('Should not be here');
@@ -81,15 +79,12 @@ function cleanUpUnusedRow(args) {
     if (args.isRoot) {
         $.options.deleteRow($.closeWinRow, {animated : false});
     }
-    else {
-        deleteSection($.flowSection);
-    }
 
     if (args.isModal) {
         $.options.deleteRow($.openChildWinRow, {animated : false});
     }
 
-    if (!args.isDrawer) {
+    if (!args.isDrawer || args.isDrawerView) {
         deleteSection($.forDrawerSection);
     }
 }

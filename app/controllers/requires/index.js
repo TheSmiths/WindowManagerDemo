@@ -8,30 +8,10 @@
 function selectedModule(e) {
     if (!e.row.type) return false;
 
-    var modules = {
-        'drawer' : {
-            filename : 'drawer',
-            src : 'DrawerManager.2.1.2'
-        },
-        'tabs' : {
-            filename : 'tabs',
-            src : 'TabsManager.0.9.3'
-        }
-    };
-
-    /* ONLY FOR DEMO
-     * isAllowToCloseRoot: flow 0 will never close
-     */
-    if (e.source.isAllowToCloseRoot === false) {
-        e.source.isAllowToCloseRoot = true;
-    }
-    else if (typeof e.source.isAllowToCloseRoot === 'undefined') {
-        e.source.isAllowToCloseRoot = false;
-    }
+    var modules = Alloy.CFG.modules;
 
     return Alloy.createController(modules[e.row.type].filename, {
-        windowManager : require(modules[e.row.type].src),
-        isAllowToCloseRoot : e.source.isAllowToCloseRoot
+        windowManager : require(modules[e.row.type].src)
     }).open();
 }
 
