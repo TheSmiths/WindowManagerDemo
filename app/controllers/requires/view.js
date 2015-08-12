@@ -30,6 +30,16 @@ function selectedOption(e) {
     else if (e.row.action === "close") {
         $.window && $.window.close();
     }
+    else if (e.row.action === "openDrawer") {
+        return Alloy.createController('drawer', {
+            windowManager : require("DrawerManager.2.1.2")
+        }).open();
+    }
+    else if (e.row.action === "openTabs") {
+        return Alloy.createController('tabs', {
+            windowManager : require("TabsManager.0.9.3")
+        }).open();
+    }
     else {
         console.error('Should not be here');
     }
@@ -84,8 +94,19 @@ function cleanUpUnusedRow(args) {
         $.options.deleteRow($.openChildWinRow, {animated : false});
     }
 
+    if (Alloy.CFG.demo === 'drawer') {
+        $.options.deleteRow($.openTabs, {animated : false});
+    }
+    if (Alloy.CFG.demo === 'tabs') {
+        $.options.deleteRow($.openDrawer, {animated : false});
+    }
+
     if (!args.isDrawer || args.isDrawerView) {
         deleteSection($.forDrawerSection);
+    }
+
+    if (args.isDrawerView || args.isModal) {
+        deleteSection($.flowSection);
     }
 }
 

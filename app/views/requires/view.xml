@@ -11,5 +11,10 @@
             <TableViewRow action="openLeftView" title="Open Left View"/>
             <TableViewRow action="openRightView" title="Open Right View"/>
         </TableViewSection>
+
+        <TableViewSection id="flowSection" headerTitle="Flow">
+            <TableViewRow id="openDrawer" action="openDrawer" title="Open New Flow"/>
+            <TableViewRow id="openTabs" action="openTabs" title="Open New Flow"/>
+        </TableViewSection>
     </TableView>
 </Alloy>

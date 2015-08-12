@@ -2,7 +2,7 @@
     "global": {
         "allowToChooseModuleInRunTime": false,
         "__comment__": "demo : drawer or tabs",
-        "demo" : "drawer",
+        "demo" : "tabs",
         "modules" : {
             "drawer" : {
                 "filename" : "drawer",
