@@ -13,8 +13,8 @@
         </TableViewSection>
 
         <TableViewSection id="flowSection" headerTitle="Flow">
-            <TableViewRow id="openDrawer" action="openDrawer" title="Open New Flow"/>
-            <TableViewRow id="openTabs" action="openTabs" title="Open New Flow"/>
+            <TableViewRow id="openDrawer" action="openDrawer" title="Open New Drawer Flow"/>
+            <TableViewRow id="openTabs" action="openTabs" title="Open New Tabs Flow"/>
         </TableViewSection>
     </TableView>
 </Alloy>
