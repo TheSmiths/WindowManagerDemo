@@ -56,8 +56,6 @@ function _createFlow(args) {
         tabs : tabs
     }));
 
-    console.log(JSON.stringify(root));
-
     /* Handle extra options correcly */
     root.setActiveTab(args.options.activeTab);
 

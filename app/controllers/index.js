@@ -1,6 +1,7 @@
 /* -------------- INIT FUNCTION ---------- */
 (function constructor(args) {
     if (Alloy.CFG.allowToChooseModuleInRunTime) {
+        if (OS_ANDROID) { $.index.theme = "materialTheme" };
         $.index.open();
     }
     else {
@@ -14,6 +15,6 @@
 
         return Alloy.createController(demo, {
             windowManager : require(modules[demo].src)
-        }).open()
+        }).open();
     }
 })(arguments[0] || {});

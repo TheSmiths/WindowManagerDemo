@@ -5,7 +5,11 @@
     backgroundColor : '#E0E0E0'
 }
 'Window[platform=ios]' : {
-    translucent : true
+    translucent : false,
+    barColor : '#2196F3',
+    titleAttributes : {
+        color: '#FAFAFA',
+    }
 }
 'View' : {
     backgroundColor : '#E0E0E0'

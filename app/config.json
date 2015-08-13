@@ -1,6 +1,6 @@
 {
     "global": {
-        "allowToChooseModuleInRunTime": false,
+        "allowToChooseModuleInRunTime": true,
         "__comment__": "demo : drawer or tabs",
         "demo" : "drawer",
         "modules" : {

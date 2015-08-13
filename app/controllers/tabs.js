@@ -23,7 +23,10 @@ function _open() {
                 views.push(Alloy.createController('requires/view', {
                     isRoot : true,
                     windowManager : $.windowManager,
-                    closeFlow : _close
+                    closeFlow : _close,
+                    removeEventListener : function () {
+                        $.flow.window.removeEventListener('focus', changeColorOfTabBar);
+                    }
                 }).getView());
             }
             return views;
@@ -33,14 +36,14 @@ function _open() {
             styles : { /* style for tabgroup */
                 tabsBackgroundColor : '#2196F3',
                 tabsTintColor : '#FAFAFA',
-                translucent : true
+                translucent : false
             },
             tabs : [
                 {
                     title : 'Tab 1',
                     windowProperties : {
                         title : 'Win 1',
-                        barColor : '#2196F3',
+                        barColor : '#E91E63',
                         titleAttributes : {
                             color: '#FAFAFA',
                         }
@@ -60,7 +63,7 @@ function _open() {
                     title : 'Tab 3',
                     windowProperties : {
                         title : 'Win 3',
-                        barColor : '#2196F3',
+                        barColor : '#FF5722',
                         titleAttributes : {
                             color: '#FAFAFA',
                         }
@@ -70,7 +73,15 @@ function _open() {
         }
     });
 
+    $.flow.window.addEventListener('focus', changeColorOfTabBar);
+
     $.flow.open();
+}
+
+function changeColorOfTabBar(e) {
+    var tabGroup = $.flow.window;
+    Alloy.CFG.primaryColor = e.tab.window.barColor;
+    tabGroup.tabsBackgroundColor = e.tab.window.barColor;
 }
 
 /* unable to close flow for now */
