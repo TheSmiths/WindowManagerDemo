@@ -9,6 +9,8 @@ function initWindowManager() {
     $.windowManager.configure({ debug: true });
 
     $.windowManager.init({
+        rightDrawerWidth : 250,
+        leftDrawerWidth : 250,
         leftView : initDrawerView(),
         rightView : initDrawerView(),
     });
@@ -29,7 +31,7 @@ function initDrawerView () {
 
     if (OS_IOS) {
         var window = Ti.UI.createWindow({
-            backgroundColor : '#ecf0f1'
+            backgroundColor : '#E0E0E0'
         });
         window.add(view);
         return window;
@@ -50,7 +52,11 @@ function _open() {
         closeFlow : _close
     }).getView(), {
         drawer : true,
-        title : "Drawer Manager 2.1.2"
+        title : "Drawer Manager 2.1.2",
+        barColor : '#2196F3',
+        titleAttributes : {
+            color: '#FAFAFA',
+        }
     });
 
     $.flow.open();

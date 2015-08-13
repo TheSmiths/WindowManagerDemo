@@ -30,23 +30,40 @@ function _open() {
         })(),
         options : {
             activeTab : 1,
+            styles : { /* style for tabgroup */
+                tabsBackgroundColor : '#2196F3',
+                tabsTintColor : '#FAFAFA',
+                translucent : true
+            },
             tabs : [
                 {
                     title : 'Tab 1',
                     windowProperties : {
-                        title : 'Win 1'
+                        title : 'Win 1',
+                        barColor : '#2196F3',
+                        titleAttributes : {
+                            color: '#FAFAFA',
+                        }
                     }
                 },
                 {
                     title : 'Tab 2',
                     windowProperties : {
-                        title : 'Win 2'
+                        title : 'Win 2',
+                        barColor : '#2196F3',
+                        titleAttributes : {
+                            color: '#FAFAFA',
+                        }
                     }
                 },
                 {
                     title : 'Tab 3',
                     windowProperties : {
-                        title : 'Win 3'
+                        title : 'Win 3',
+                        barColor : '#2196F3',
+                        titleAttributes : {
+                            color: '#FAFAFA',
+                        }
                     }
                 }
             ]

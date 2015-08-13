@@ -1,20 +1,49 @@
 <Alloy>
     <TableView id="options" onClick="selectedOption">
         <TableViewSection>
-            <TableViewRow action="openModalWin" title="Open a modal Window"/>
-            <TableViewRow id="openChildWinRow" action="openChildWin" title="Open a children Window"/>
-            <TableViewRow id="closeWinRow" action="close" title="Close"/>
+            <HeaderView>
+                <View class="headerView">
+                    <Label class="headerTitle">Window</Label>
+                </View>
+            </HeaderView>
+            <TableViewRow action="openModalWin" >
+                <Label class="rowTitle">Open a modal Window</Label>
+            </TableViewRow>
+            <TableViewRow id="openChildWinRow" action="openChildWin" >
+                <Label class="rowTitle">Open a children Window</Label>
+            </TableViewRow>
+            <TableViewRow id="closeWinRow" action="close" >
+                <Label class="rowTitle">Close</Label>
+            </TableViewRow>
         </TableViewSection>
 
         <!-- Only for Drawer -->
-        <TableViewSection id="forDrawerSection" headerTitle="Drawer Views">
-            <TableViewRow action="openLeftView" title="Open Left View"/>
-            <TableViewRow action="openRightView" title="Open Right View"/>
+        <TableViewSection id="forDrawerSection">
+            <HeaderView>
+                <View class="headerView">
+                    <Label class="headerTitle">Drawer View</Label>
+                </View>
+            </HeaderView>
+            <TableViewRow action="openLeftView" >
+                <Label class="rowTitle">Open Left View</Label>
+            </TableViewRow>
+            <TableViewRow action="openRightView" >
+                <Label class="rowTitle">Open Right View</Label>
+            </TableViewRow>
         </TableViewSection>
 
-        <TableViewSection id="flowSection" headerTitle="Flow">
-            <TableViewRow id="openDrawer" action="openDrawer" title="Open New Drawer Flow"/>
-            <TableViewRow id="openTabs" action="openTabs" title="Open New Tabs Flow"/>
+        <TableViewSection id="flowSection">
+            <HeaderView>
+                <View class="headerView">
+                    <Label class="headerTitle">Flow</Label>
+                </View>
+            </HeaderView>
+            <TableViewRow id="openDrawer" action="openDrawer" >
+                <Label class="rowTitle">Open New Drawer Flow</Label>
+            </TableViewRow>
+            <TableViewRow id="openTabs" action="openTabs" >
+                <Label class="rowTitle">Open New Tabs Flow</Label>
+            </TableViewRow>
         </TableViewSection>
     </TableView>
 </Alloy>

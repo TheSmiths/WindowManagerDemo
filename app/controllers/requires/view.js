@@ -61,7 +61,13 @@ function openWindow(args) {
     });
     var window = $.windowManager.createWindow(viewCtrl.getView(), {
         modal : args.modal,
-        drawer : $.isDrawer
+        drawer : $.isDrawer,
+        theme: OS_ANDROID ? "materialTheme" : null,
+        barColor : OS_IOS ? '#2196F3' : null,
+        title : args.modal ? 'Modal Window' : 'Children Window',
+        titleAttributes : OS_IOS ? {
+            color: '#FAFAFA',
+        } : null
     });
 
     // we need this line for closing previous modal window if need
@@ -114,6 +120,24 @@ function cleanUpUnusedRow(args) {
 
 function _setWindow(window) {
     $.window = window;
+
+    if (OS_IOS && !window.modal) {
+        // Children window
+        // Handle closing window by leftNavButton
+        var leftNavButton = Ti.UI.createLabel({
+            text : 'Back',
+            color : '#FAFAFA'
+        });
+
+        leftNavButton.addEventListener('click', function closeWindow() {
+            leftNavButton.removeEventListener('click', closeWindow);
+            console.log($.window);
+            $.window && $.window.close();
+        });
+
+        // window created by DrawerManager module -> newWindowStub
+        window.window.setLeftNavButton(leftNavButton);
+    }
 }
 
 /* --------------- EXPORT THE PUBLIC INTERFACE --------------- */

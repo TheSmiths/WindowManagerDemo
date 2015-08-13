@@ -1,24 +1,50 @@
 'NavigationWindow[platform=ios]' : {
-    backgroundColor : '#ecf0f1'
+    backgroundColor : '#E0E0E0'
 }
 'Window' : {
-    backgroundColor : '#ecf0f1'
+    backgroundColor : '#E0E0E0'
 }
 'Window[platform=ios]' : {
     translucent : true
 }
 'View' : {
-    backgroundColor : '#ecf0f1'
+    backgroundColor : '#E0E0E0'
 }
-'TableView' : {
-    backgroundColor : '#ecf0f1'
-}
+
 'Label' : {
-    color : '#34495e'
+    color : '#212121'
+}
+
+'TableView' : {
+    backgroundColor : '#E0E0E0',
+    separatorColor : '#E0E0E0'
+}
+
+'TableView[platform=ios]' : {
+    separatorInsets : {
+        left:10,
+        right:10
+    }
+}
+
+
+'.headerView' : {
+    backgroundColor : '#E0E0E0',
+    height : 30
+}
+'.headerTitle' : {
+    left : 15,
+    color : '#757575'
 }
 'TableViewRow' : {
-    color : '#34495e'
-}
-'TableViewRow[platform=android]' : {
+    backgroundColor : '#FAFAFA',
+    color : '#212121',
     height : 44
+}
+
+'TableViewRow[platform=ios]' : {
+    selectionStyle : Titanium.UI.iPhone.TableViewCellSelectionStyle.GRAY
+}
+'.rowTitle' : {
+    left : 15
 }
