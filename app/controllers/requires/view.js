@@ -4,6 +4,7 @@
     $.windowManager = args.windowManager;
     $.closeFlow = args.closeFlow;
     $.isDrawer = args.isDrawer;
+    $.removeEventListener = args.removeEventListener;
 
     args.styles && $.options.applyProperties(args.styles);
 
@@ -36,6 +37,7 @@ function selectedOption(e) {
         }).open();
     }
     else if (e.row.action === "openTabs") {
+        $.removeEventListener && $.removeEventListener();
         return Alloy.createController('tabs', {
             windowManager : require("TabsManager.0.9.3")
         }).open();
@@ -63,7 +65,7 @@ function openWindow(args) {
         modal : args.modal,
         drawer : $.isDrawer,
         theme: OS_ANDROID ? "materialTheme" : null,
-        barColor : OS_IOS ? '#2196F3' : null,
+        barColor : Alloy.CFG.primaryColor || '#2196F3',
         title : args.modal ? 'Modal Window' : 'Children Window',
         titleAttributes : OS_IOS ? {
             color: '#FAFAFA',

@@ -10,6 +10,8 @@ function selectedModule(e) {
 
     var modules = Alloy.CFG.modules;
 
+    Alloy.CFG.demo = modules[e.row.type].filename;
+
     return Alloy.createController(modules[e.row.type].filename, {
         windowManager : require(modules[e.row.type].src)
     }).open();
