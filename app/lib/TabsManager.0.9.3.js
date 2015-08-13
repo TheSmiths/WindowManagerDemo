@@ -51,9 +51,12 @@ function _createFlow(args) {
     }
 
     /* root is a Ti.UI.TabGroup */
-    var root = Ti.UI.createTabGroup({
+    var styles = args.options.styles ? args.options.styles : {};
+    var root = Ti.UI.createTabGroup(_.extend(styles, {
         tabs : tabs
-    });
+    }));
+
+    console.log(JSON.stringify(root));
 
     /* Handle extra options correcly */
     root.setActiveTab(args.options.activeTab);
