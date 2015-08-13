@@ -94,12 +94,12 @@ function cleanUpUnusedRow(args) {
         $.options.deleteRow($.openChildWinRow, {animated : false});
     }
 
-    // if (Alloy.CFG.demo === 'drawer') {
-    //     $.options.deleteRow($.openTabs, {animated : false});
-    // }
-    // if (Alloy.CFG.demo === 'tabs') {
-    //     $.options.deleteRow($.openDrawer, {animated : false});
-    // }
+    if (Alloy.CFG.demo === 'drawer') {
+        $.options.deleteRow($.openTabs, {animated : false});
+    }
+    if (Alloy.CFG.demo === 'tabs') {
+        $.options.deleteRow($.openDrawer, {animated : false});
+    }
 
     if (!args.isDrawer || args.isDrawerView) {
         deleteSection($.forDrawerSection);
