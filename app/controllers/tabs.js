@@ -11,8 +11,6 @@ function initWindowManager() {
     $.windowManager.init();
 }
 
-/* --------------- HANDLE USER INTERACTIONS --------------- */
-
 /* --------------- EMBEDDED METHODS --------------- */
 
 function _open() {
@@ -24,9 +22,6 @@ function _open() {
                     isRoot : true,
                     windowManager : $.windowManager,
                     closeFlow : _close,
-                    removeEventListener : function () {
-                        $.flow.window.removeEventListener('focus', changeColorOfTabBar);
-                    }
                 }).getView());
             }
             return views;
@@ -73,18 +68,17 @@ function _open() {
         }
     });
 
-    $.flow.window.addEventListener('focus', changeColorOfTabBar);
+    OS_IOS && $.flow.window.addEventListener('focus', changeColorOfTabBar);
 
     $.flow.open();
 }
 
 function changeColorOfTabBar(e) {
     var tabGroup = $.flow.window;
-    Alloy.CFG.primaryColor = e.tab.window.barColor;
-    tabGroup.tabsBackgroundColor = e.tab.window.barColor;
+    Alloy.CFG.primaryColor = tabGroup.activeTab.window.barColor;
+    tabGroup.tabsBackgroundColor = tabGroup.activeTab.window.barColor;
 }
 
-/* unable to close flow for now */
 function _close() {
     $.flow.close();
 }

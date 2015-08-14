@@ -4,7 +4,6 @@
     $.windowManager = args.windowManager;
     $.closeFlow = args.closeFlow;
     $.isDrawer = args.isDrawer;
-    $.removeEventListener = args.removeEventListener;
 
     args.styles && $.options.applyProperties(args.styles);
 
@@ -31,16 +30,8 @@ function selectedOption(e) {
     else if (e.row.action === "close") {
         $.window && $.window.close();
     }
-    else if (e.row.action === "openDrawer") {
-        return Alloy.createController('drawer', {
-            windowManager : require("DrawerManager.2.1.2")
-        }).open();
-    }
-    else if (e.row.action === "openTabs") {
-        $.removeEventListener && $.removeEventListener();
-        return Alloy.createController('tabs', {
-            windowManager : require("TabsManager.0.9.3")
-        }).open();
+    else if (e.row.action === "exitFlow") {
+        $.closeFlow();
     }
     else {
         console.error('Should not be here');
@@ -97,16 +88,13 @@ function cleanUpUnusedRow(args) {
     if (args.isRoot) {
         $.options.deleteRow($.closeWinRow, {animated : false});
     }
+    else {
+        deleteSection($.flowSection);
+    }
+
 
     if (args.isModal) {
         $.options.deleteRow($.openChildWinRow, {animated : false});
-    }
-
-    if (Alloy.CFG.demo === 'drawer') {
-        $.options.deleteRow($.openTabs, {animated : false});
-    }
-    if (Alloy.CFG.demo === 'tabs') {
-        $.options.deleteRow($.openDrawer, {animated : false});
     }
 
     if (!args.isDrawer || args.isDrawerView) {
@@ -133,7 +121,6 @@ function _setWindow(window) {
 
         leftNavButton.addEventListener('click', function closeWindow() {
             leftNavButton.removeEventListener('click', closeWindow);
-            console.log($.window);
             $.window && $.window.close();
         });
 

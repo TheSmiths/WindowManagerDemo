@@ -2,43 +2,9 @@
 
 (function constructor(args) {
     $.windowManager = args.windowManager;
-    initWindowManager();
+
+    // already init in index page
 })(arguments[0] || {});
-
-function initWindowManager() {
-    $.windowManager.configure({ debug: true });
-
-    $.windowManager.init({
-        rightDrawerWidth : 250,
-        leftDrawerWidth : 250,
-        leftView : initDrawerView(),
-        rightView : initDrawerView(),
-    });
-}
-
-function initDrawerView () {
-    var view = Alloy.createController('requires/view', {
-        isRoot : true,
-        isDrawer : true,
-        isDrawerView : true,
-
-        windowManager : $.windowManager,
-        closeFlow : _close,
-        styles : {
-            top : OS_IOS ? 20 : 0
-        }
-    }).getView();
-
-    if (OS_IOS) {
-        var window = Ti.UI.createWindow({
-            backgroundColor : '#E0E0E0'
-        });
-        window.add(view);
-        return window;
-    }
-
-    return view;
-}
 
 /* --------------- HANDLE USER INTERACTIONS --------------- */
 
@@ -60,6 +26,9 @@ function _open() {
     });
 
     $.flow.open();
+
+    // No need to change color in drawer demo
+    Alloy.CFG.primaryColor = null;
 }
 
 /* unable to close flow for now */

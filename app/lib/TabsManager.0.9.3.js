@@ -1,14 +1,12 @@
 var _currentFlow = null, // A reference to the current flow, will hold any new window.
+    flowFactory = require('flowFactory').factory,
     _config = {
         defaultStyle: { backgroundColor: "#FFFFFF" },
     };
 
-
 /* --------------- FACTORY METHODS --------------- */
 var _Factory = (function () {
-    var count = 0;
     return {
-        newId: function () { return count++; },
         newWindow: function (options) {
             var platform = OS_IOS && "ios" || "android",
                 style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']),
@@ -65,7 +63,7 @@ function _createFlow(args) {
      */
 
     return _Factory.newFlowStub({
-        id: _Factory.newId(),
+        id: flowFactory.newId(),
         root: root
     });
 }

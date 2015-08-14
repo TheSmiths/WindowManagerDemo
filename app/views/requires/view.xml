@@ -38,12 +38,10 @@
                     <Label class="headerTitle">Flow</Label>
                 </View>
             </HeaderView>
-            <TableViewRow id="openDrawer" action="openDrawer" >
-                <Label class="rowTitle">Open New Drawer Flow</Label>
+            <TableViewRow id="exitFlow" action="exitFlow" >
+                <Label class="rowTitle">Exit</Label>
             </TableViewRow>
-            <TableViewRow id="openTabs" action="openTabs" >
-                <Label class="rowTitle">Open New Tabs Flow</Label>
-            </TableViewRow>
+
         </TableViewSection>
     </TableView>
 </Alloy>

@@ -1,4 +1,5 @@
 var _DrawerModule = OS_ANDROID ? require('com.tripvi.drawerlayout') : require('dk.napp.drawer'),
+    flowFactory = require('flowFactory').factory,
     _currentFlow = null, // A reference to the current flow, will hold any new window.
     _config = {
         defaultWithDrawer: true,
@@ -13,9 +14,7 @@ var _DrawerModule = OS_ANDROID ? require('com.tripvi.drawerlayout') : require('d
 
 /* --------------- FACTORY METHODS --------------- */
 var _Factory = (function () {
-    var count = 0;
     return {
-        newId: function () { return count++; },
         newWindow: function (options) {
             var platform = OS_IOS && "ios" || "android",
                 style = _.extend(_.omit(_config.defaultStyle, ['ios', 'android']),
@@ -42,7 +41,7 @@ var _Factory = (function () {
 
 function _createFlow(view, options) {
     var flow = {
-            id: _Factory.newId(),
+            id: flowFactory.newId(),
             children: OS_ANDROID ? [] : undefined,
             viewStack: OS_ANDROID ? [] : undefined,
             navigationWindow: OS_IOS ? null : undefined,
@@ -209,7 +208,8 @@ function _closeFlow(flow) {
     /* On Android, all window should be closed separately; Only if no drawer, otherwise children are
      * not windows but views and do not need to be closed */
     OS_ANDROID && !flow.withDrawer && flow.children.map(function (w) { w.close(); });
-    OS_IOS && flow.withDrawer && !_currentFlow.withDrawer && _drawer.close();
+    /* make sure we arer closing right flow with drawer*/
+    OS_IOS && flow.withDrawer && flow === _currentFlow && _drawer.close();
     flow.root.close();
 
     /* Remove the flow if it is still active */

@@ -1,7 +1,2 @@
 <Alloy>
-    <NavigationWindow platform="ios">
-        <Require src="requires/index"></Require>
-    </NavigationWindow>
-
-    <Require platform="android" src="requires/index"></Require>
 </Alloy>
